@@ -8,7 +8,7 @@ async function getClimbs() {
     return data?.items as any[];
 }
 
-export default async function Gallery() {
+export default async function Boulders() {
 
     const climbs = await getClimbs();
 
@@ -30,7 +30,8 @@ function Climb({climb }: any) {
     const url = `https://docuclimb.onrender.com/api/files/boulders/${id}/${image}`
 
     return (
-        <Link href={`/climb/${id}`}>
+        // <Link href={`/boulders/${id}`}>
+        <Link href={`/boulders/`}>
             <div>
                 <h2>{grade}</h2>
                 <Image src={url} alt="Climb" width={100} height={100}></Image>
