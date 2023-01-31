@@ -15,12 +15,9 @@ export default function RootLayout({
       <head />
       <body>
         <nav>
-          <Link href={"/"}>
-            Home
-          </Link>
-          <Link href={"/climbs"}>
-            Climbs
-          </Link>
+          <Link href="/"></Link>
+          <Link href="/gallery"></Link>
+          <Link href="/demo"></Link>
         </nav>
         {children}
       </body>
