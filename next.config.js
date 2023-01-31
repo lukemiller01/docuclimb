@@ -6,9 +6,9 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'http',
-        hostname: '127.0.0.1',
-        port: '8090',
+        protocol: 'https',
+        hostname: 'docuclimb.onrender.com',
+        port: '',
         pathname: '**',
       },
     ],
