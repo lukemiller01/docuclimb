@@ -13,7 +13,13 @@ module.exports = {
       'green-tint': '#047035',
       'white': '#ffffff',
       'black': '#000000',
+      'grey': '#9A9A9A',
     },
+    extend: {
+      opacity: {
+        '25': '.25',
+      }
+    }
   },
 }
 

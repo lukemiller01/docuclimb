@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 async function getClimb(climbId: string) {
     const res = await fetch(
-        `https://docuclimb.onrender.com/api/collections/boulders/records/${climbId}`,
+        `https://api.docuclimb.com/api/collections/boulders/records/${climbId}`,
         {
             next: {revalidate: 10},
         }
@@ -13,7 +13,7 @@ async function getClimb(climbId: string) {
 
 export default async function Boulder({ params } : any) {
     const climb = await getClimb(params.id)
-    const url = `https://docuclimb.onrender.com/api/files/boulders/${climb.id}/${climb.image}`;
+    const url = `https://api.docuclimb.com/api/files/boulders/${climb.id}/${climb.image}`;
 
     return (
         <div>

@@ -1,10 +1,11 @@
 'use client'
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, PlusCircleIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image';
 import logo from '../public/docuclimb.svg'
 import profile from '../public/square.jpg'
+import CreateModal from './Components/CreateModal';
 
 const navigation = [
   { name: 'Boulders', href: '/boulders', current: true },
@@ -16,10 +17,22 @@ function classNames(...classes: any) {
 }
 
 export default function Navbar() {
+
+  let [isOpen, setIsOpen] = useState(false)
+
+  function closeModal() {
+    setIsOpen(false)
+  }
+
+  function openModal() {
+    setIsOpen(true)
+  }
+
   return (
     <Disclosure as="nav" className="bg-gray-800 sticky top-0 bg-white">
       {({ open }) => (
         <>
+          <CreateModal isOpen={isOpen} closeModal={closeModal} />
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -62,7 +75,7 @@ export default function Navbar() {
                   className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-green focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                 >
                   <span className="sr-only">View notifications</span>
-                  <BellIcon className="h-6 w-6" aria-hidden="true" />
+                  <PlusCircleIcon className="h-6 w-6" aria-hidden="true" onClick={() => openModal()} />
                 </button>
 
                 {/* Profile dropdown */}

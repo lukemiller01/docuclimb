@@ -7,7 +7,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'docuclimb.onrender.com',
+        hostname: 'api.docuclimb.com',
         port: '',
         pathname: '**',
       },

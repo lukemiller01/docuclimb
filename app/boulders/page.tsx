@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Navbar from '@/app/navbar';
 
 async function getClimbs() {
-    const res = await fetch('https://docuclimb.onrender.com/api/collections/boulders/records?page=1&perPage=30',
+    const res = await fetch('https://api.docuclimb.com/api/collections/boulders/records?page=1&perPage=30',
         {cache: 'no-store'}
     );
 
@@ -30,7 +30,7 @@ export default async function Boulders() {
 
 function Climb({climb }: any) {
     const { id, grade, image, date } = climb || {};
-    const url = `https://docuclimb.onrender.com/api/files/boulders/${id}/${image}`
+    const url = `https://api.docuclimb.com/api/files/boulders/${id}/${image}`
 
     return (
         // <Link href={`/boulders/${id}`}>
