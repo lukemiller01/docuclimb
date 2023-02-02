@@ -5,41 +5,30 @@ import { useRouter } from 'next/navigation';
 import ColorListBox from './ColorListBox';
 import GradeListBox from './GradeListBox';
 import SettingSwitch from './SettingSwitch';
+import axios from 'axios';
 
 export default function CreateModal({isOpen, closeModal}:any) {
 
   const [selectedColor, setSelectedColor] = useState({color: 'Black'}) // Color
   const [selectedGrade, setSelectedGrade] = useState({grade: 'V0'}) // Grade
   const [enabled, setEnabled] = useState(false) // Indoor / outdoor
-  const [selectedImage, setSelectedImage] = useState("");
-  const [selectedFile, setSelectedFile] = useState<File>();
+  const [selectedImage, setSelectedImage] = useState<File>();
 
   const router = useRouter();
-
   // var someDate = new Date();
   // someDate.setDate(someDate.getDate());
   // var today = someDate.toISOString().substring(0, 10);
 
   const addClimb = async() => {
-    // console.log(selectedImage);
-    // console.log(selectedFile);
     const formData = new FormData();
-    if(selectedFile) {
-      formData.append("documents", selectedFile);
+    if(selectedImage) {
+      formData.append("image", selectedImage);
     }
-    const res = await fetch('https://api.docuclimb.com/api/collections/boulders/records?page=1&perPage=30', {
-      method: "POST",
-      headers: {
-        "Content-Type": 'application/json',
-      },
-      body: JSON.stringify({
-        "grade": selectedGrade.grade,
-        "image": formData,
-        "color": selectedColor.color,
-        "environment": enabled,
-      }),
+    formData.append("grade", selectedGrade.grade)
+    formData.append("color", selectedColor.color)
+    formData.append("environment", enabled.toString())
 
-    }); // TODO: add error handling
+    const data = await axios.post('api/create/', formData)
 
     // TODO: set all params to null
     router.refresh();
@@ -107,8 +96,7 @@ export default function CreateModal({isOpen, closeModal}:any) {
                                       <input id="file-upload" name="file-upload" type="file" className="sr-only" onChange={({target}) => {
                                         if(target.files) {
                                           const file = target.files[0];
-                                          setSelectedImage(URL.createObjectURL(file));
-                                          setSelectedFile(file);
+                                          setSelectedImage(file);
                                         }
                                       }}/>
                                   </label>
