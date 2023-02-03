@@ -4,7 +4,7 @@ import { Switch } from '@headlessui/react'
 export default function SettingSwitch({enabled, setEnabled}:any) {
 
   return (
-    <div className='flex justify-center items-center gap-4'>
+    <div className='flex justify-center items-center gap-4 py-2'>
         <p className={`${enabled ? '' : 'font-bold'} text-base text-gray-400 sm:text-sm w-16 text-right`}>Indoor</p>
       <Switch
         checked={enabled}

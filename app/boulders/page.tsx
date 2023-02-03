@@ -61,8 +61,8 @@ function Climb({climb }: any) {
             <div className="flex items-center flex-col bg-white rounded-2xl">
                 <Image src={url} alt="Climb" width={400} height={0} className="flex rounded-t-2xl"></Image>
                 <div className=" w-11/12 flex justify-between items-center py-4">
-                    <h2 className={`${colorVariants[color.toLowerCase() as keyof ColorArray]} text-4xl text-shadow`}>{grade}</h2>
-                    <p>{date.substring(0, 10)}</p>
+                    <h2 className={`${colorVariants[color.toLowerCase() as keyof ColorArray]} text-4xl font-bold text-shadow`}>{grade}</h2>
+                    <p className="font-bold">{date.substring(0, 10)}</p>
                 </div>
             </div>
         // </Link>

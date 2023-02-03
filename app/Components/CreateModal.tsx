@@ -1,7 +1,8 @@
 'use client';
 
-// Headless UI:
+// Headless / Hero
 import { Dialog, Transition } from '@headlessui/react'
+import { PhotoIcon } from '@heroicons/react/24/outline'
 
 // Input Compontns:
 import ColorListBox from './ColorListBox';
@@ -12,13 +13,16 @@ import SettingSwitch from './SettingSwitch';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { Fragment, useState } from 'react'
+import Image from 'next/image';
 
 export default function CreateModal({isOpen, closeModal}:any) {
 
   const [selectedColor, setSelectedColor] = useState({color: 'Black'}) // Color
   const [selectedGrade, setSelectedGrade] = useState({grade: 'V0'}) // Grade
   const [enabled, setEnabled] = useState(false) // Indoor / outdoor
+
   const [selectedImage, setSelectedImage] = useState<File>();
+  const [previewImage, setPreviewImage] = useState("");
 
   const router = useRouter();
   // var someDate = new Date();
@@ -26,16 +30,16 @@ export default function CreateModal({isOpen, closeModal}:any) {
   // var today = someDate.toISOString().substring(0, 10);
 
   const addClimb = async() => {
-    const now = new Date().toISOString()
     const formData = new FormData();
     if(selectedImage) {
       formData.append("image", selectedImage);
+      const modified = new Date(selectedImage.lastModified).toISOString().replace('T', ' ');
+      formData.append("date", modified);
     }
     formData.append("grade", selectedGrade.grade)
     formData.append("color", selectedColor.color)
     formData.append("environment", enabled.toString())
-    formData.append('date', now);
-
+    
     const data = await axios.post('api/create/', formData)
 
     // TODO: set all params to null
@@ -70,7 +74,7 @@ export default function CreateModal({isOpen, closeModal}:any) {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-md transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-custom transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <Dialog.Title
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900 text-center"
@@ -81,30 +85,25 @@ export default function CreateModal({isOpen, closeModal}:any) {
                         
                         <div className="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
                             <div className="space-y-1 text-center">
-                                <svg
-                                className="mx-auto h-12 w-12 text-gray-400"
-                                stroke="currentColor"
-                                fill="none"
-                                viewBox="0 0 48 48"
-                                aria-hidden="true"
-                                >
-                                <path
-                                    d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                                    strokeWidth={2}
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                />
-                                </svg>
+                              {selectedImage 
+                                ? <Image src={previewImage} alt='uploaded image' width={150} height={0} className='mx-auto'></Image>
+                                : <PhotoIcon className="mx-auto h-12 w-12 text-gray-400"/>
+                              }
+                                
                                 <div className="flex text-sm text-gray-600">
                                   <label
                                       htmlFor="file-upload"
                                       className="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500"
-                                  >
+                                    >
                                       <span>Upload a file</span>
                                       <input id="file-upload" name="file-upload" type="file" className="sr-only" onChange={({target}) => {
                                         if(target.files) {
+                                          // Set file to send to API
                                           const file = target.files[0];
                                           setSelectedImage(file);
+
+                                          // Set URL for preview
+                                          setPreviewImage(URL.createObjectURL(file));
                                         }
                                       }}/>
                                   </label>
@@ -114,12 +113,12 @@ export default function CreateModal({isOpen, closeModal}:any) {
                             </div>
                         </div>
 
-                        <div className='flex flex-row px-2 gap-2 mt-4 mb-4'>
-                            <ColorListBox selected={selectedColor} setSelected={setSelectedColor}/>
+                        <SettingSwitch enabled={enabled} setEnabled={setEnabled}/>
+
+                        <div className='flex flex-row px-2 py-2 gap-2'>
+                            { enabled? null : <ColorListBox selected={selectedColor} setSelected={setSelectedColor}/> }
                             <GradeListBox selected={selectedGrade} setSelected={setSelectedGrade}/>
                         </div>
-
-                        <SettingSwitch enabled={enabled} setEnabled={setEnabled}/>
 
                         <div className="mt-10 flex items-center justify-center gap-x-6">
                             <button
