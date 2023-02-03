@@ -74,7 +74,7 @@ export default function CreateModal({isOpen, closeModal}:any) {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-custom transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-sm transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <Dialog.Title
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900 text-center"
@@ -86,7 +86,7 @@ export default function CreateModal({isOpen, closeModal}:any) {
                         <div className="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
                             <div className="space-y-1 text-center">
                               {selectedImage 
-                                ? <Image src={previewImage} alt='uploaded image' width={150} height={0} className='mx-auto'></Image>
+                                ? <Image src={previewImage} alt='uploaded image' width={100} height={300} className='mx-auto h-[150px] w-auto'></Image>
                                 : <PhotoIcon className="mx-auto h-12 w-12 text-gray-400"/>
                               }
                                 
@@ -96,20 +96,48 @@ export default function CreateModal({isOpen, closeModal}:any) {
                                       className="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500"
                                     >
                                       <span>Upload a file</span>
-                                      <input id="file-upload" name="file-upload" type="file" className="sr-only" onChange={({target}) => {
+                                      <input id="file-upload" name="file-upload" type="file" className="sr-only" accept=".png, .jpg, .jpeg, .heic, .heif" onChange={ async ({target}) => {
                                         if(target.files) {
-                                          // Set file to send to API
-                                          const file = target.files[0];
-                                          setSelectedImage(file);
+                                          var imageFile = target.files[0];
+
+                                          // If the image is an heic file
+                                          if (imageFile.type === "image/heic") {
+                                            // Get the params from the file
+                                            const lastModified = imageFile.lastModified;
+                                            const name = imageFile.name;
+                                            // Convert to JPEG
+                                            const heic2any = (await import("heic2any")).default;
+                                            const newBlob: any = await heic2any({ blob: imageFile});
+                                            newBlob.lastModified = lastModified;
+                                            newBlob.name = name;
+                                            // Set the file again
+                                            imageFile = newBlob;
+                                          }
+                                          if(imageFile.size > 3000000) {
+                                            // Clip the size of the image
+                                            const options = { // Set the maximum file size
+                                              maxSizeMB: 1,
+                                              useWebWorker: true
+                                            }
+                                            try { // Compress the image.
+                                              const imageCompression = (await import("browser-image-compression")).default;
+                                              const compressedFile = await imageCompression(imageFile, options);
+                                              imageFile = compressedFile;
+                                            } catch (error) {
+                                              console.log(error);
+                                            }
+                                          }
+
+                                          setSelectedImage(imageFile);
 
                                           // Set URL for preview
-                                          setPreviewImage(URL.createObjectURL(file));
+                                          setPreviewImage(URL.createObjectURL(imageFile));
                                         }
                                       }}/>
                                   </label>
                                   <p className="pl-1">or drag and drop</p>
                                 </div>
-                                <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                                <p className="text-xs text-gray-500">PNG, JPG, HEIC/HEIF</p>
                             </div>
                         </div>
 

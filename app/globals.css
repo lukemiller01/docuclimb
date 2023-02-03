@@ -6,8 +6,4 @@
   .text-shadow {
     -webkit-text-stroke: 1px black;
   }
-
-  .max-w-custom {
-    max-width: 25rem;
-  }
 }

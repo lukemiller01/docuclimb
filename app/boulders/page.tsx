@@ -43,8 +43,8 @@ export default async function Boulders() {
         <div>
             <Navbar/>
             <div className="mx-auto justify-center grid gap-12 py-12 px-4 bg-light-grey">
-                {climbs?.reverse().map((climb) => {
-                    return <Climb key={climb.id} climb={climb}/>;
+                {climbs?.reverse().map((climb, index) => {
+                    return <Climb key={climb.id} climb={climb} index={index}/>;
                 })}
             </div>
 
@@ -52,14 +52,14 @@ export default async function Boulders() {
     )
 }
 
-function Climb({climb }: any) {
+function Climb({climb, index}: any) {
     const { id, grade, color, image, date } = climb || {};
     const url = `https://api.docuclimb.com/api/files/boulders/${id}/${image}`
 
     return (
         // <Link href={`/boulders/${id}`}>
             <div className="flex items-center flex-col bg-white rounded-2xl">
-                <Image src={url} alt="Climb" width={400} height={0} className="flex rounded-t-2xl"></Image>
+                <Image src={url} alt="Climb" width={400} height={1200} className="rounded-t-2xl h-auto w-auto" priority={index === 0}></Image>
                 <div className=" w-11/12 flex justify-between items-center py-4">
                     <h2 className={`${colorVariants[color.toLowerCase() as keyof ColorArray]} text-4xl font-bold text-shadow`}>{grade}</h2>
                     <p className="font-bold">{date.substring(0, 10)}</p>
