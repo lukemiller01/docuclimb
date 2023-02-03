@@ -15,7 +15,7 @@ export default function SettingSwitch({enabled, setEnabled}:any) {
         <span
           aria-hidden="true"
           className={`${enabled ? 'translate-x-9' : 'translate-x-0'}
-            pointer-events-none inline-block h-[34px] w-[34px] transform rounded-full bg-green shadow-lg ring-0 transition duration-200 ease-in-out`}
+            pointer-events-none inline-block h-[34px] w-[34px] transform rounded-full bg-brand-green shadow-lg ring-0 transition duration-200 ease-in-out`}
         />
       </Switch>
       <p className={`${enabled ? 'font-bold' : ''} text-base text-gray-400 sm:text-sm w-16`}>Outdoor</p>

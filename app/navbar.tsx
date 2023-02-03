@@ -58,7 +58,7 @@ export default function Navbar() {
                         key={item.name}
                         href={item.href}
                         className={classNames(
-                          item.current ? 'bg-gray-900 text-green' : 'text-gray-300 hover:bg-gray-700 hover:text-green',
+                          item.current ? 'bg-gray-900 text-brand-green' : 'text-gray-300 hover:bg-gray-700 hover:text-brand-green',
                           'px-3 py-2 rounded-md text-sm font-medium'
                         )}
                         aria-current={item.current ? 'page' : undefined}
@@ -72,7 +72,7 @@ export default function Navbar() {
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <button
                   type="button"
-                  className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-green focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                  className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-brand-green focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                 >
                   <span className="sr-only">View notifications</span>
                   <PlusCircleIcon className="h-6 w-6" aria-hidden="true" onClick={() => openModal()} />
@@ -141,7 +141,7 @@ export default function Navbar() {
                   as="a"
                   href={item.href}
                   className={classNames(
-                    item.current ? 'bg-gray-900 text-green' : 'text-gray-300 hover:bg-gray-700 hover:text-green',
+                    item.current ? 'bg-gray-900 text-brand-green' : 'text-gray-300 hover:bg-gray-700 hover:text-green',
                     'block px-3 py-2 rounded-md text-base font-medium'
                   )}
                   aria-current={item.current ? 'page' : undefined}

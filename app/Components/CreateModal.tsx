@@ -1,11 +1,17 @@
 'use client';
+
+// Headless UI:
 import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useState } from 'react'
-import { useRouter } from 'next/navigation';
+
+// Input Compontns:
 import ColorListBox from './ColorListBox';
 import GradeListBox from './GradeListBox';
 import SettingSwitch from './SettingSwitch';
+
+// Functional:
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import { Fragment, useState } from 'react'
 
 export default function CreateModal({isOpen, closeModal}:any) {
 
@@ -20,6 +26,7 @@ export default function CreateModal({isOpen, closeModal}:any) {
   // var today = someDate.toISOString().substring(0, 10);
 
   const addClimb = async() => {
+    const now = new Date().toISOString()
     const formData = new FormData();
     if(selectedImage) {
       formData.append("image", selectedImage);
@@ -27,6 +34,7 @@ export default function CreateModal({isOpen, closeModal}:any) {
     formData.append("grade", selectedGrade.grade)
     formData.append("color", selectedColor.color)
     formData.append("environment", enabled.toString())
+    formData.append('date', now);
 
     const data = await axios.post('api/create/', formData)
 
@@ -115,7 +123,7 @@ export default function CreateModal({isOpen, closeModal}:any) {
 
                         <div className="mt-10 flex items-center justify-center gap-x-6">
                             <button
-                            className="rounded-md bg-green px-3.5 py-1.5 text-base font-semibold leading-7 text-white shadow-sm hover:bg-green-tint focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            className="rounded-md bg-brand-green px-3.5 py-1.5 text-base font-semibold leading-7 text-white shadow-sm hover:bg-brand-green-tint focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             type="submit"
                             onClick={closeModal}>
                               Add Climb
