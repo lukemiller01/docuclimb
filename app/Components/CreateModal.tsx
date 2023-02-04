@@ -15,7 +15,7 @@ import { useRouter } from 'next/navigation';
 import { Fragment, useState } from 'react'
 import Image from 'next/image';
 
-export default function CreateModal({isOpen, closeModal}:any) {
+export default function CreateModal({isOpen, closeModal, type, id}:any) {
 
   const [selectedColor, setSelectedColor] = useState({color: 'Black'}) // Color
   const [selectedGrade, setSelectedGrade] = useState({grade: 'V0'}) // Grade
@@ -25,11 +25,10 @@ export default function CreateModal({isOpen, closeModal}:any) {
   const [previewImage, setPreviewImage] = useState("");
 
   const router = useRouter();
-  // var someDate = new Date();
-  // someDate.setDate(someDate.getDate());
-  // var today = someDate.toISOString().substring(0, 10);
 
   const addClimb = async() => {
+
+    // Set formData for internal API
     const formData = new FormData();
     if(selectedImage) {
       formData.append("image", selectedImage);
@@ -39,8 +38,14 @@ export default function CreateModal({isOpen, closeModal}:any) {
     formData.append("grade", selectedGrade.grade)
     formData.append("color", selectedColor.color)
     formData.append("environment", enabled.toString())
-    
-    const data = await axios.post('api/create/', formData)
+
+    if (type === 'create' ) { // Call create method
+      const data = await axios.post('api/create/', formData)
+    }
+    else if (type === 'edit') {  // Call edit method
+      console.log('edit');
+      const data = await axios.patch(`api/edit/${id}`, formData)
+    }
 
     // TODO: set all params to null
     router.refresh();
@@ -87,7 +92,7 @@ export default function CreateModal({isOpen, closeModal}:any) {
                             <div className="space-y-1 text-center">
                               {selectedImage 
                                 ? <Image src={previewImage} alt='uploaded image' width={100} height={300} className='mx-auto h-[150px] w-auto'></Image>
-                                : <PhotoIcon className="mx-auto h-12 w-12 text-gray-400"/>
+                                : <PhotoIcon className="mx-auto h-12 w-12"/>
                               }
                                 
                                 <div className="flex text-sm text-gray-600">
