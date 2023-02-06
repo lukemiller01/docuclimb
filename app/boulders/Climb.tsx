@@ -54,7 +54,7 @@ export default function Climb({climb, index}: any) {
     return (
         <>
         {/* <Link href={`/boulders/${id}`}> */}
-            <CreateModal isOpen={isOpen} closeModal={closeModal} type={'edit'} id={id}/>
+            <CreateModal isOpen={isOpen} closeModal={closeModal} actionType={'Edit'} id={id} climb={climb} url={url}/>
             <div className="flex items-center flex-col bg-white rounded-2xl">
                 <div className=" w-11/12 flex justify-between items-center py-2">
                     <Image className="h-8 w-8 rounded-full" src={profile} alt='profile' width={50} height={50}/>

@@ -15,14 +15,14 @@ import { useRouter } from 'next/navigation';
 import { Fragment, useState } from 'react'
 import Image from 'next/image';
 
-export default function CreateModal({isOpen, closeModal, type, id}:any) {
+export default function CreateModal({isOpen, closeModal, actionType, id, climb, url}:any) {
 
-  const [selectedColor, setSelectedColor] = useState({color: 'Black'}) // Color
-  const [selectedGrade, setSelectedGrade] = useState({grade: 'V0'}) // Grade
-  const [enabled, setEnabled] = useState(false) // Indoor / outdoor
+  const [selectedColor, setSelectedColor] = useState(climb? {color: climb.color} : {color: 'Black'}) // Color
+  const [selectedGrade, setSelectedGrade] = useState(climb? {grade: climb.grade} : {grade: 'V0'}) // Grade
+  const [enabled, setEnabled] = useState(climb? climb.environment : false) // Indoor / outdoor
 
   const [selectedImage, setSelectedImage] = useState<File>();
-  const [previewImage, setPreviewImage] = useState("");
+  const [previewImage, setPreviewImage] = useState(climb? url : "");
 
   const router = useRouter();
 
@@ -39,15 +39,13 @@ export default function CreateModal({isOpen, closeModal, type, id}:any) {
     formData.append("color", selectedColor.color)
     formData.append("environment", enabled.toString())
 
-    if (type === 'create' ) { // Call create method
+    if (actionType === 'Create' ) { // Call create method
       const data = await axios.post('api/create/', formData)
     }
-    else if (type === 'edit') {  // Call edit method
-      console.log('edit');
+    else if (actionType === 'Edit') {  // Call edit method
       const data = await axios.patch(`api/edit/${id}`, formData)
     }
 
-    // TODO: set all params to null
     router.refresh();
   }
 
@@ -84,13 +82,13 @@ export default function CreateModal({isOpen, closeModal, type, id}:any) {
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900 text-center"
                   >
-                    Add a Climb
+                    {actionType} Climb
                   </Dialog.Title>
                     <form onSubmit={() => addClimb()}>
                         
                         <div className="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
                             <div className="space-y-1 text-center">
-                              {selectedImage 
+                              {previewImage 
                                 ? <Image src={previewImage} alt='uploaded image' width={100} height={300} className='mx-auto h-[150px] w-auto'></Image>
                                 : <PhotoIcon className="mx-auto h-12 w-12"/>
                               }
@@ -101,7 +99,7 @@ export default function CreateModal({isOpen, closeModal, type, id}:any) {
                                       className="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500"
                                     >
                                       <span>Upload a file</span>
-                                      <input id="file-upload" name="file-upload" type="file" className="sr-only" accept=".png, .jpg, .jpeg, .heic, .heif" onChange={ async ({target}) => {
+                                      <input id="file-upload" type="file" className="sr-only" accept=".png, .jpg, .jpeg, .heic, .heif" onChange={ async ({target}) => {
                                         if(target.files) {
                                           var imageFile = target.files[0];
 
@@ -146,7 +144,7 @@ export default function CreateModal({isOpen, closeModal, type, id}:any) {
                             </div>
                         </div>
 
-                        <SettingSwitch enabled={enabled} setEnabled={setEnabled}/>
+                        <SettingSwitch enabled={enabled} setEnabled={setEnabled} value={climb !== undefined ? climb.environment : null}/>
 
                         <div className='flex flex-row px-2 py-2 gap-2'>
                             { enabled? null : <ColorListBox selected={selectedColor} setSelected={setSelectedColor}/> }
