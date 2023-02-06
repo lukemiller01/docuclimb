@@ -2,7 +2,7 @@
 
 // Headless / Hero
 import { Dialog, Transition } from '@headlessui/react'
-import { PhotoIcon } from '@heroicons/react/24/outline'
+import { PhotoIcon, ArrowPathIcon } from '@heroicons/react/24/outline'
 
 // Input Compontns:
 import ColorListBox from './ColorListBox';
@@ -24,9 +24,14 @@ export default function CreateModal({isOpen, closeModal, actionType, id, climb, 
   const [selectedImage, setSelectedImage] = useState<File>();
   const [previewImage, setPreviewImage] = useState(climb? url : "");
 
+  const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [loadingImage, setLoadingImage] = useState(false);
+
   const router = useRouter();
 
-  const addClimb = async() => {
+  const addClimb = async(e:any) => {
+    e.preventDefault();
+    setButtonDisabled(true)
 
     // Set formData for internal API
     const formData = new FormData();
@@ -40,15 +45,17 @@ export default function CreateModal({isOpen, closeModal, actionType, id, climb, 
     formData.append("environment", enabled.toString())
 
     if (actionType === 'Create' ) { // Call create method
-      const data = await axios.post('api/create/', formData)
+      await axios.post('api/create/', formData)
+
     }
     else if (actionType === 'Edit') {  // Call edit method
-      const data = await axios.patch(`api/edit/${id}`, formData)
+      await axios.patch(`api/edit/${id}`, formData)
     }
 
-    router.refresh();
+    router.replace('/boulders');
+    setButtonDisabled(false)
+    closeModal();
   }
-
 
   return (
     <>
@@ -78,19 +85,13 @@ export default function CreateModal({isOpen, closeModal, actionType, id, climb, 
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel className="w-full max-w-sm transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                  <Dialog.Title
-                    as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900 text-center"
-                  >
-                    {actionType} Climb
-                  </Dialog.Title>
-                    <form onSubmit={() => addClimb()}>
+                    <form onSubmit={(e) => addClimb(e)}>
                         
                         <div className="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
                             <div className="space-y-1 text-center">
-                              {previewImage 
-                                ? <Image src={previewImage} alt='uploaded image' width={100} height={300} className='mx-auto h-[150px] w-auto'></Image>
-                                : <PhotoIcon className="mx-auto h-12 w-12"/>
+                              {loadingImage 
+                                ? <ArrowPathIcon className="animate-spin h-12 w-12 mx-auto"></ArrowPathIcon>
+                                : previewImage? <Image src={previewImage} alt='uploaded image' width={100} height={300} className='mx-auto h-[150px] w-auto'></Image> : <PhotoIcon className="mx-auto h-12 w-12" />
                               }
                                 
                                 <div className="flex text-sm text-gray-600">
@@ -101,6 +102,7 @@ export default function CreateModal({isOpen, closeModal, actionType, id, climb, 
                                       <span>Upload a file</span>
                                       <input id="file-upload" type="file" className="sr-only" accept=".png, .jpg, .jpeg, .heic, .heif" onChange={ async ({target}) => {
                                         if(target.files) {
+                                          setLoadingImage(true);
                                           var imageFile = target.files[0];
 
                                           // If the image is an heic file
@@ -131,6 +133,7 @@ export default function CreateModal({isOpen, closeModal, actionType, id, climb, 
                                             }
                                           }
 
+                                          setLoadingImage(false);
                                           setSelectedImage(imageFile);
 
                                           // Set URL for preview
@@ -155,8 +158,12 @@ export default function CreateModal({isOpen, closeModal, actionType, id, climb, 
                             <button
                             className="rounded-md bg-brand-green px-3.5 py-1.5 text-base font-semibold leading-7 text-white shadow-sm hover:bg-brand-green-tint focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             type="submit"
-                            onClick={closeModal}>
-                              Add Climb
+                            id='action-button'
+                            disabled={buttonDisabled}
+                            >
+                              {buttonDisabled
+                              ? <ArrowPathIcon className="animate-spin h-5 w-5"></ArrowPathIcon>
+                              : actionType + ' Climb' }
                             </button>
                         </div>
                     </form>
