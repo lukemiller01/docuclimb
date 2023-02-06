@@ -47,7 +47,7 @@ export default function Home() {
           <div className="flex lg:flex-1">
             <a href="/" className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
-              <Image className='h-8' src={logo} alt='docuclimb logo' width={50} height={50}/>
+              <Image src={logo} alt='docuclimb logo' width={32} height={32}/>
             </a>
           </div>
           <div className="flex lg:hidden">
@@ -68,7 +68,7 @@ export default function Home() {
             ))}
           </div>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            <a href="/" className="text-sm font-semibold leading-6 text-gray-900">
+            <a href="/login" className="text-sm font-semibold leading-6 text-gray-900">
               Log in <span aria-hidden="true">&rarr;</span>
             </a>
           </div>
@@ -104,7 +104,7 @@ export default function Home() {
                 </div>
                 <div className="py-6">
                   <a
-                    href="/"
+                    href="/login"
                     className="-mx-3 block rounded-lg py-2.5 px-3 text-base font-semibold leading-6 text-gray-900 hover:bg-gray-400/10"
                   >
                     Log in
@@ -127,7 +127,7 @@ export default function Home() {
               </p>
               <div className="mt-10 flex items-center justify-center gap-x-6">
                 <a
-                  href="/"
+                  href="/register"
                   className="rounded-md bg-brand-green px-3.5 py-1.5 text-base font-semibold leading-7 text-white shadow-sm hover:bg-green-tint focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
                   Get started

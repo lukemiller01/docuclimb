@@ -1,8 +1,8 @@
 'use client';
 
 // Headless / Hero
-import { Dialog, Transition } from '@headlessui/react'
-import { PhotoIcon, ArrowPathIcon } from '@heroicons/react/24/outline'
+import { Dialog, Transition } from '@headlessui/react';
+import { PhotoIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
 
 // Input Compontns:
 import ColorListBox from './ColorListBox';
@@ -12,7 +12,7 @@ import SettingSwitch from './SettingSwitch';
 // Functional:
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import { Fragment, useState } from 'react'
+import { Fragment, useState } from 'react';
 import Image from 'next/image';
 
 export default function CreateModal({isOpen, closeModal, actionType, id, climb, url}:any) {
@@ -40,20 +40,20 @@ export default function CreateModal({isOpen, closeModal, actionType, id, climb, 
       const modified = new Date(selectedImage.lastModified).toISOString().replace('T', ' ');
       formData.append("date", modified);
     }
-    formData.append("grade", selectedGrade.grade)
-    formData.append("color", selectedColor.color)
-    formData.append("environment", enabled.toString())
+    formData.append("grade", selectedGrade.grade);
+    formData.append("color", selectedColor.color);
+    formData.append("environment", enabled.toString());
 
     if (actionType === 'Create' ) { // Call create method
-      await axios.post('api/create/', formData)
+      await axios.post('api/create/', formData);
 
     }
     else if (actionType === 'Edit') {  // Call edit method
-      await axios.patch(`api/edit/${id}`, formData)
+      await axios.patch(`api/edit/${id}`, formData);
     }
 
     router.replace('/boulders');
-    setButtonDisabled(false)
+    setButtonDisabled(false);
     closeModal();
   }
 

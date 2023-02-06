@@ -1,11 +1,20 @@
 'use client'
-import { Fragment, useState } from 'react'
+
+// Icons / UI
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, PlusCircleIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image';
 import logo from '../public/docuclimb.svg'
 import profile from '../public/square.jpg'
+
+// Functional
+import { useRouter } from 'next/navigation';
+import { Fragment, useState } from 'react'
+
+// Components
 import CreateModal from './Components/CreateModal';
+
+import { pb } from './functions/pocketbase'
 
 const navigation = [
   { name: 'Boulders', href: '/boulders', current: true },
@@ -18,6 +27,8 @@ function classNames(...classes: any) {
 
 export default function Navbar() {
 
+  const router = useRouter();
+
   let [isOpen, setIsOpen] = useState(false)
 
   function closeModal() {
@@ -26,6 +37,11 @@ export default function Navbar() {
 
   function openModal() {
     setIsOpen(true)
+  }
+
+  function logout() {
+    pb.authStore.clear();
+    router.push('/');
   }
 
   return (
@@ -119,8 +135,8 @@ export default function Navbar() {
                       <Menu.Item>
                         {({ active }) => (
                           <a
-                            href="/logout"
-                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                            onClick={() => logout()}
+                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700 cursor-pointer')}
                           >
                             Sign out
                           </a>
