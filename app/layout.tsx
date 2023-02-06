@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import './globals.css'
-import Navbar from './navbar'
+import Navbar from './Components/Navbar'
 
 export default function RootLayout({
   children,

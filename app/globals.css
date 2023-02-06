@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@responsive {
+@layer {
   .text-shadow {
     -webkit-text-stroke: 1px black;
   }

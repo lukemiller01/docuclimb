@@ -4,17 +4,16 @@
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, PlusCircleIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image';
-import logo from '../public/docuclimb.svg'
-import profile from '../public/square.jpg'
+import logo from '../../public/docuclimb.svg'
 
 // Functional
 import { useRouter } from 'next/navigation';
 import { Fragment, useState } from 'react'
 
 // Components
-import CreateModal from './Components/CreateModal';
+import CreateModal from './CreateModal';
 
-import { pb } from './functions/pocketbase'
+import { pb } from '../functions/pocketbase'
 
 const navigation = [
   { name: 'Boulders', href: '/boulders', current: true },
@@ -25,7 +24,7 @@ function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Navbar() {
+export default function Navbar({profile}:any) {
 
   const router = useRouter();
 
