@@ -28,7 +28,7 @@ export default function Login() {
       userData.password,
     );
 
-    router.push('/boulders');
+    router.push('/app/feed');
   }
 
   return (

@@ -7,7 +7,7 @@ import Image from 'next/image';
 
 const navigation = [
   { name: 'Home', href: '/' },
-  { name: 'Climbs', href: '/boulders' },
+  { name: 'App', href: '/app/feed' },
   { name: 'Demo', href: '/demo' },
 ]
 
@@ -123,7 +123,7 @@ export default function Home() {
                 Track your Bouldering Progression.
               </h1>
               <p className="mt-6 text-lg leading-8 text-gray-600">
-                Docuclimb helps you track your indoor climbing log with a place to store your boulders & track your progress.
+                Docuclimb helps you track your climbing log with a place to store your boulders & track your progress.
               </p>
               <div className="mt-10 flex items-center justify-center gap-x-6">
                 <a

@@ -45,7 +45,7 @@ export default function Register() {
       userData.password,
     );
 
-    router.replace('/boulders');
+    router.replace('/app/feed');
   }
 
   return (

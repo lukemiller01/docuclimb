@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import './globals.css'
-import Navbar from './Components/Navbar'
 
 export default function RootLayout({
   children,
@@ -13,7 +12,6 @@ export default function RootLayout({
       <body>
         <nav>
           <Link href="/"></Link>
-          {/* <Link href="/boulders"></Link> */}
           <Link href="/demo"></Link>
         </nav>
         {children}

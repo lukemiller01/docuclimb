@@ -5,7 +5,9 @@ import { redirect } from 'next/navigation';
 import { getUserFromCookie } from '../functions/getUserFromCookie';
 // import { ReadonlyRequestCookies } from 'next/dist/server/app-render';
 
-export default async function BouldersLayout({children} : {children: React.ReactNode}) {
+import Navbar from '../Components/Navbar'
+
+export default async function DashboardLayout({children} : {children: React.ReactNode}) {
 
   const user = await getUserFromCookie(cookies());
   // console.log(user); // user is available
@@ -14,11 +16,15 @@ export default async function BouldersLayout({children} : {children: React.React
     redirect("/login");
   }
 
+  const { id, avatar, username } = user || {};
+  const profile = `https://api.docuclimb.com/api/files/_pb_users_auth_/${id}/${avatar}`
+
   return (
     <>
+      <Navbar profile={profile} username={username}/>
       <nav>
-        <Link href="/login"></Link>
-        <Link href="/boulders"></Link>
+        <Link href="/app/feed"></Link>
+        <Link href="/app/profile"></Link>
       </nav>
       {children}
     </>

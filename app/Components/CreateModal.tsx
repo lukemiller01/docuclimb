@@ -52,7 +52,7 @@ export default function CreateModal({isOpen, closeModal, actionType, id, climb, 
       await axios.patch(`api/edit/${id}`, formData);
     }
 
-    router.replace('/boulders');
+    router.replace('/app/feed');
     setButtonDisabled(false);
     closeModal();
   }

@@ -10,6 +10,7 @@ interface User {
     emailVisibility: boolean
     verified: boolean
     avatar: File
+    first: string
 }
 
 function getUserFromCookie(cookies: any): User | null {
