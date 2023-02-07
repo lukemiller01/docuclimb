@@ -21,7 +21,7 @@ export default async function DashboardLayout({children} : {children: React.Reac
 
   return (
     <>
-      <Navbar profile={profile} username={username}/>
+      <Navbar profile={profile} username={username} currentUser={id}/>
       <nav>
         <Link href="/app/feed"></Link>
         <Link href="/app/profile"></Link>

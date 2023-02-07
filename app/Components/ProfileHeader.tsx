@@ -7,7 +7,7 @@ import Image from 'next/image';
 // Icons
 import { Cog8ToothIcon } from '@heroicons/react/24/outline'
 
-const ProfileHeader = ({username, profile, first}:any) => {
+const ProfileHeader = ({username, profile, first, numClimbs}:any) => {
   return (
     <div className="flex items-start sm:items-center justify-center py-4 sm:py-8 flex-col px-4">
         <div>
@@ -27,7 +27,7 @@ const ProfileHeader = ({username, profile, first}:any) => {
                     </div>
                     <div className="text-gray-800 flex flex-row gap-5 sm:gap-10 items-center">
                         <div> 
-                            <span className="font-semibold"> 18 </span> Climbs 
+                            <span className="font-semibold"> {numClimbs} </span> {numClimbs > 1? 'Climbs' : 'Climb'} 
                         </div>
                         <div> 
                             <span className="font-semibold"> 100 </span> Followers 

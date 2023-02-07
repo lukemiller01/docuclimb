@@ -1,16 +1,8 @@
 'use client'
-// Icons
-import { EllipsisHorizontalIcon } from '@heroicons/react/24/outline'
-// import profile from '../../public/square.jpg'
-
-import { useState } from 'react'
 
 // Functional
 import Link from "next/link";
 import Image from 'next/image';
-
-// Components
-import CreateModal from '../../../Components/CreateModal';
 
 interface ColorArray {
     red: string;

@@ -7,7 +7,7 @@ import Image from 'next/image';
 import logo from '../../public/docuclimb.svg'
 
 // Functional
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { Fragment, useState } from 'react'
 import Link from "next/link";
 
@@ -16,18 +16,19 @@ import CreateModal from './CreateModal';
 
 import { pb } from '../functions/pocketbase'
 
-const navigation = [
-  { name: 'Feed', href: '/app/feed', current: true },
-  { name: 'Progress', href: '/app/progress', current: false },
-]
-
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Navbar({profile, username}:any) {
+export default function Navbar({profile, username, currentUser}:any) {
 
   const router = useRouter();
+  const pathname = usePathname();
+
+  const navigation = [
+    { name: 'Feed', href: '/app/feed' },
+    { name: 'Progress', href: '/app/progress' },
+  ]
 
   let [isOpen, setIsOpen] = useState(false)
 
@@ -48,7 +49,7 @@ export default function Navbar({profile, username}:any) {
     <Disclosure as="nav" className="bg-gray-800 sticky top-0 bg-white">
       {({ open }) => (
         <>
-          <CreateModal isOpen={isOpen} closeModal={closeModal} actionType={'Create'} climb={undefined}/>
+          <CreateModal isOpen={isOpen} closeModal={closeModal} actionType={'Create'} climb={undefined} currentUser={currentUser}/>
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -69,19 +70,22 @@ export default function Navbar({profile, username}:any) {
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
-                    {navigation.map((item) => (
-                      <a
+                    {navigation.map((item) => {
+                      const current = pathname === item.href;
+                      return (
+                        <a
                         key={item.name}
                         href={item.href}
                         className={classNames(
-                          item.current ? 'bg-gray-900 text-brand-green' : 'text-gray-300 hover:bg-gray-700 hover:text-brand-green',
+                          current ? 'bg-gray-900 text-brand-green' : 'text-gray-300 hover:bg-gray-700 hover:text-brand-green',
                           'px-3 py-2 rounded-md text-sm font-medium'
                         )}
-                        aria-current={item.current ? 'page' : undefined}
+                        aria-current={current ? 'page' : undefined}
                       >
                         {item.name}
                       </a>
-                    ))}
+                      )
+                    })}
                   </div>
                 </div>
               </div>
@@ -151,20 +155,23 @@ export default function Navbar({profile, username}:any) {
 
           <Disclosure.Panel className="sm:hidden">
             <div className="space-y-1 px-2 pt-2 pb-3">
-              {navigation.map((item) => (
-                <Disclosure.Button
+              {navigation.map((item) => {
+                const current = pathname === item.href;
+                return (
+                  <Disclosure.Button
                   key={item.name}
                   as="a"
                   href={item.href}
                   className={classNames(
-                    item.current ? 'bg-gray-900 text-brand-green' : 'text-gray-300 hover:bg-gray-700 hover:text-green',
+                    current ? 'bg-gray-900 text-brand-green' : 'text-gray-300 hover:bg-gray-700 hover:text-green',
                     'block px-3 py-2 rounded-md text-base font-medium'
                   )}
-                  aria-current={item.current ? 'page' : undefined}
+                  aria-current={current ? 'page' : undefined}
                 >
                   {item.name}
                 </Disclosure.Button>
-              ))}
+                )
+              })}
             </div>
           </Disclosure.Panel>
         </>

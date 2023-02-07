@@ -15,7 +15,7 @@ import { useRouter } from 'next/navigation';
 import { Fragment, useState } from 'react';
 import Image from 'next/image';
 
-export default function CreateModal({isOpen, closeModal, actionType, id, climb, url}:any) {
+export default function CreateModal({isOpen, closeModal, actionType, id, climb, url, currentUser}:any) {
 
   const [selectedColor, setSelectedColor] = useState(climb? {color: climb.color} : {color: 'Black'}) // Color
   const [selectedGrade, setSelectedGrade] = useState(climb? {grade: climb.grade} : {grade: 'V0'}) // Grade
@@ -43,13 +43,14 @@ export default function CreateModal({isOpen, closeModal, actionType, id, climb, 
     formData.append("grade", selectedGrade.grade);
     formData.append("color", selectedColor.color);
     formData.append("environment", enabled.toString());
+    formData.append("uid", currentUser);
 
     if (actionType === 'Create' ) { // Call create method
-      await axios.post('api/create/', formData);
+      await axios.post('../api/create/', formData);
 
     }
     else if (actionType === 'Edit') {  // Call edit method
-      await axios.patch(`api/edit/${id}`, formData);
+      await axios.patch(`../api/edit/${id}`, formData);
     }
 
     router.replace('/app/feed');
