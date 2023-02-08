@@ -12,10 +12,11 @@ import axios from 'axios';
 import logo from '../../public/docuclimb.svg'
 import { LockClosedIcon } from '@heroicons/react/20/solid'
 import { ArrowPathIcon, UserCircleIcon  } from '@heroicons/react/24/outline'
+import avatar from '../../public/avatar.svg'
 
 export default function Register() {
 
-  const [userData, setUserData] = useState({first: '', username: '', email: '', password: '', passwordConfirm: ''});
+  const [userData, setUserData] = useState({first: '', username: '', email: '', password: '', passwordConfirm: '', featureUpdates: false});
   const [selectedImage, setSelectedImage] = useState<File>();
   const [previewImage, setPreviewImage] = useState("");
   const [buttonDisabled, setButtonDisabled] = useState(false);
@@ -37,6 +38,7 @@ export default function Register() {
     formData.append("email", userData.email);
     formData.append("password", userData.password);
     formData.append("passwordConfirm", userData.passwordConfirm);
+    formData.append("featureUpdates", userData.featureUpdates.toString());
 
     await axios.post('api/user/create/', formData);
 
@@ -198,9 +200,10 @@ export default function Register() {
                   name="remember-me"
                   type="checkbox"
                   className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                  onChange={(e) => setUserData({...userData, featureUpdates: e.target.checked})}
                 />
                 <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                  Remember me
+                  Notify me about new features
                 </label>
               </div>
 

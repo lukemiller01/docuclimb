@@ -15,7 +15,12 @@ export default function DashboardLayout({children} : {children: React.ReactNode}
   }
 
   const { id, avatar, username } = user || {};
-  const profile = `https://api.docuclimb.com/api/files/_pb_users_auth_/${id}/${avatar}`
+  if(avatar) {
+    var profile = `https://api.docuclimb.com/api/files/_pb_users_auth_/${id}/${avatar}`
+  }
+  else{
+    var profile = '/avatar.svg'
+  }
 
   return (
     <>

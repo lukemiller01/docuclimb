@@ -11,6 +11,7 @@ interface User {
     verified: boolean
     avatar: File
     first: string
+    featureUpdates: boolean
 }
 
 function getUserFromCookie(cookies: any): User | null {

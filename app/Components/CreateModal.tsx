@@ -15,7 +15,7 @@ import { useRouter } from 'next/navigation';
 import { Fragment, useState } from 'react';
 import Image from 'next/image';
 
-export default function CreateModal({isOpen, closeModal, actionType, id, climb, url, currentUser}:any) {
+export default function CreateModal({isOpen, closeModal, actionType, id, climb, url, currentUser, profile}:any) {
 
   const [selectedColor, setSelectedColor] = useState(climb? {color: climb.color} : {color: 'Black'}) // Color
   const [selectedGrade, setSelectedGrade] = useState(climb? {grade: climb.grade} : {grade: 'V0'}) // Grade
@@ -28,6 +28,7 @@ export default function CreateModal({isOpen, closeModal, actionType, id, climb, 
   const [loadingImage, setLoadingImage] = useState(false);
 
   const router = useRouter();
+  const pathname = useRouter();
 
   const addClimb = async(e:any) => {
     e.preventDefault();
@@ -45,15 +46,21 @@ export default function CreateModal({isOpen, closeModal, actionType, id, climb, 
     formData.append("environment", enabled.toString());
     formData.append("uid", currentUser);
 
-    if (actionType === 'Create' ) { // Call create method
-      await axios.post('../api/create/', formData);
-
+    if (actionType === 'Create' && profile ) { // Call create method from profile
+      await axios.post('../../api/create/', formData);
     }
-    else if (actionType === 'Edit') {  // Call edit method
+    else if(actionType === 'Create') { // Call create method from Navbar
+      await axios.post('../api/create/', formData);
+    }
+    else if (actionType === 'Edit' && profile) {  // Call edit method from profile
+      await axios.patch(`../../api/edit/${id}`, formData);
+    }
+    else if(actionType === 'Edit') { // Call edit method from Navbar
       await axios.patch(`../api/edit/${id}`, formData);
     }
 
-    router.replace('/app/feed');
+    router.refresh();
+    window.scrollTo(0, 0)
     setButtonDisabled(false);
     closeModal();
   }

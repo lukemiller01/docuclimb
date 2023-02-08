@@ -10,13 +10,17 @@ interface User {
     verified: boolean
     avatar: File
     first: string
+    featureUpdates: boolean
 }
 
 async function getUserFromUsername(username: string) {
-    
-    const user = await pb.collection('users').getFirstListItem(`username="${username}"`);
 
-    return user as unknown as User;
+    try {
+        const user = await pb.collection('users').getFirstListItem(`username="${username}"`);
+        return user as unknown as User;
+    } catch (error) {
+        console.log('Error:', error);
+    }
 }
 
 export { getUserFromUsername };

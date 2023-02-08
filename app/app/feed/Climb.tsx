@@ -53,7 +53,7 @@ export default function Climb({climb, index, currentUser}: any) {
         <>
             <CreateModal isOpen={isOpen} closeModal={closeModal} actionType={'Edit'} id={id} climb={climb} url={url} currentUser={currentUser}/>
             <div className="flex items-center flex-col bg-white rounded-2xl px-4">
-                <div className=" w-11/12 flex justify-between items-center py-2">
+                <div className=" w-full flex justify-between items-center py-2">
                     <Link href={`/app/profile/${username}`} className='flex flex-row items-center gap-2'>
                         <Image className="h-8 w-8 rounded-full" src={imageUrl} alt='profile' width={50} height={50}/>
                         <div className='flex flex-col x-sm:flex-row x-sm:gap-2 items-start'>

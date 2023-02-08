@@ -98,7 +98,7 @@ export default function Navbar({profile, username, currentUser}:any) {
                   type="button"
                   className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-brand-green focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                 >
-                  <span className="sr-only">View notifications</span>
+                  <span className="sr-only">Add Climb</span>
                   <PlusCircleIcon className="h-6 w-6" aria-hidden="true" onClick={() => openModal()} />
                 </button>
 
@@ -107,7 +107,7 @@ export default function Navbar({profile, username, currentUser}:any) {
                   <div>
                     <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                       <span className="sr-only">Open user menu</span>
-                      <Image className="h-8 w-8 rounded-full" src={profile} alt='profile' width={50} height={50}/>
+                      <Image className="h-8 w-8 rounded-full" src={profile} alt='profile' width={50} height={50} priority={true}/>
                     </Menu.Button>
                   </div>
                   <Transition
