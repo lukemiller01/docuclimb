@@ -46,7 +46,7 @@ export default function Navbar({profile, username, currentUser}:any) {
   }
 
   return (
-    <Disclosure as="nav" className="bg-gray-800 sticky top-0 bg-white">
+    <Disclosure as="nav" className="bg-gray-800 sticky top-0 bg-white z-10">
       {({ open }) => (
         <>
           <CreateModal isOpen={isOpen} closeModal={closeModal} actionType={'Create'} climb={undefined} currentUser={currentUser}/>
@@ -65,8 +65,12 @@ export default function Navbar({profile, username, currentUser}:any) {
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
-                  <Image className="block h-8 w-auto lg:hidden" src={logo} alt='docuclimb logo' width={50} height={50}/>
-                  <Image className="hidden h-8 w-auto lg:block" src={logo} alt='docuclimb logo' width={50} height={50}/>
+                  <Link href={`/`}>
+                    <Image className="block h-8 w-auto lg:hidden" src={logo} alt='docuclimb logo' width={50} height={50} priority={true}/>
+                  </Link>
+                  <Link href={`/`}>
+                    <Image className="hidden h-8 w-auto lg:block" src={logo} alt='docuclimb logo' width={50} height={50} priority={true}/>
+                  </Link>
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">

@@ -3,14 +3,12 @@ import Link from 'next/link'
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { getUserFromCookie } from '../functions/getUserFromCookie';
-// import { ReadonlyRequestCookies } from 'next/dist/server/app-render';
 
 import Navbar from '../Components/Navbar'
 
-export default async function DashboardLayout({children} : {children: React.ReactNode}) {
+export default function DashboardLayout({children} : {children: React.ReactNode}) {
 
-  const user = await getUserFromCookie(cookies());
-  // console.log(user); // user is available
+  const user = getUserFromCookie(cookies());
 
   if (!user) {
     redirect("/login");

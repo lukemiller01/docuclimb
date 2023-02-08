@@ -4,8 +4,8 @@ import { cookies } from 'next/headers';
 import { getUserFromCookie } from '../../functions/getUserFromCookie';
 import { getUserFromId } from '../../functions/getUserFromId';
 
-async function getProfile() {
-    const user = await getUserFromCookie(cookies());
+function getProfile() {
+    const user = getUserFromCookie(cookies());
     return user;
 }
 
@@ -39,13 +39,12 @@ export default async function Boulders() {
     const { id } = user || {};
 
     return (
-        <div>
-            <div className="mx-auto justify-center grid gap-12 py-12 px-4 bg-light-grey">
-                {climbs?.reverse().map((climb, index) => {
-                    return <Climb key={climb.id} climb={climb} index={index} currentUser={id}/>;
-                })}
-            </div>
-
+        <div className="mx-auto justify-center grid gap-12 py-12 px-4 bg-light-grey">
+            {climbs?.reverse().map((climb, index) => {
+                return (
+                    <Climb key={climb.id} climb={climb} index={index} currentUser={id}/>
+                );
+            })}
         </div>
-    )
+        )
 }
