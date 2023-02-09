@@ -24,11 +24,24 @@ export default function CreateModal({isOpen, closeModal, actionType, id, climb, 
   const [selectedImage, setSelectedImage] = useState<File>();
   const [previewImage, setPreviewImage] = useState(climb? url : "");
 
+  const [baseImage, setBaseImage] = useState<File>();
+  const [base64Text, setBase64Text] = useState("")
+
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [loadingImage, setLoadingImage] = useState(false);
 
   const router = useRouter();
-  const pathname = useRouter();
+
+  function readAsDataURL(file:File) {
+    return new Promise((resolve, reject) => {
+        const fr = new FileReader();
+        fr.onerror = reject;
+        fr.onload = () => {
+            resolve(fr.result);
+        }
+        fr.readAsDataURL(file);
+    });
+}
 
   const addClimb = async(e:any) => {
     e.preventDefault();
@@ -36,10 +49,18 @@ export default function CreateModal({isOpen, closeModal, actionType, id, climb, 
 
     // Set formData for internal API
     const formData = new FormData();
-    if(selectedImage) {
+    if(selectedImage && baseImage) {
       formData.append("image", selectedImage);
       const modified = new Date(selectedImage.lastModified).toISOString().replace('T', ' ');
       formData.append("date", modified);
+    }
+    if(baseImage) {
+      try {
+        const base64 = await readAsDataURL(baseImage) as string;
+        formData.append("base64", base64);
+      } catch (error) {
+          console.log(error)
+      }
     }
     formData.append("grade", selectedGrade.grade);
     formData.append("color", selectedColor.color);
@@ -132,9 +153,15 @@ export default function CreateModal({isOpen, closeModal, actionType, id, climb, 
                                               maxSizeMB: 1,
                                               useWebWorker: true
                                             }
+                                            const options2 = { // Set the maximum file size
+                                              maxWidthOrHeight: 50,
+                                              useWebWorker: true
+                                            }
                                             try { // Compress the image.
                                               const imageCompression = (await import("browser-image-compression")).default;
                                               const compressedFile = await imageCompression(imageFile, options);
+                                              const compressedFile2 = await imageCompression(imageFile, options2);
+                                              setBaseImage(compressedFile2);
                                               imageFile = compressedFile;
                                             } catch (error) {
                                               console.log(error);
