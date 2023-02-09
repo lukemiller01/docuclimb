@@ -120,7 +120,7 @@ export default function CreateModal({isOpen, closeModal, actionType, id, climb, 
                             <div className="space-y-1 text-center">
                               {loadingImage 
                                 ? <ArrowPathIcon className="animate-spin h-12 w-12 mx-auto"></ArrowPathIcon>
-                                : previewImage? <Image src={previewImage} alt='uploaded image' width={100} height={300} className='mx-auto h-[150px] w-auto'></Image> : <PhotoIcon className="mx-auto h-12 w-12" />
+                                : previewImage? <Image src={previewImage} alt='uploaded image' width={112} height={150} className='mx-auto w-auto' placeholder="blur" blurDataURL={`${climb.base64}`}></Image> : <PhotoIcon className="mx-auto h-12 w-12" />
                               }
                                 
                                 <div className="flex text-sm text-gray-600">

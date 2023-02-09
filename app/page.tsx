@@ -4,6 +4,7 @@ import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import logo from '../public/docuclimb.svg'
 import Image from 'next/image';
+import FAQ from './Components/FAQ'
 
 const navigation = [
   { name: 'Home', href: '/' },
@@ -15,7 +16,7 @@ export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <div className="isolate bg-white">
+    <div className="isolate bg-white pb-48">
       <div className="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]">
         <svg
           className="relative left-[calc(50%-11rem)] -z-10 h-[21.1875rem] max-w-none -translate-x-1/2 rotate-[30deg] sm:left-[calc(50%-30rem)] sm:h-[42.375rem]"
@@ -119,7 +120,7 @@ export default function Home() {
         <div className="relative px-6 lg:px-8">
           <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
             <div className="text-center">
-              <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+              <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
                 Track your Bouldering Progression.
               </h1>
               <p className="mt-6 text-lg leading-8 text-gray-600">
@@ -164,6 +165,8 @@ export default function Home() {
               </defs>
             </svg>
           </div>
+          <h2 className='text-2xl font-bold text-center'>Frequently Answered Questions</h2>
+          <FAQ/>
         </div>
       </main>
     </div>

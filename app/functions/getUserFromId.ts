@@ -15,10 +15,12 @@ interface User {
 
 async function getUserFromId(id: string) {
     
-    // const user = await pb.collection('users').getOne(id);
-    const user = pb.collection('users').getFirstListItem(`id="${id}"`);
-
-    return user as unknown as User;
+    try {
+        const user = pb.collection('users').getFirstListItem(`id="${id}"`);
+        return user as unknown as User;
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 export { getUserFromId };

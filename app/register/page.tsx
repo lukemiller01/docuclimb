@@ -41,6 +41,8 @@ export default function Register() {
     formData.append("featureUpdates", userData.featureUpdates.toString());
 
     await axios.post('api/user/create/', formData);
+    
+    await pb.collection('users').requestVerification(userData.email);
 
     await pb.collection('users').authWithPassword(
       userData.username,

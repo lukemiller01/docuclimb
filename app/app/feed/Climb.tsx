@@ -64,7 +64,7 @@ export default function Climb({climb, index, currentUser}: any) {
                     </Link>
                     {uid === currentUser? <EllipsisHorizontalIcon className="h-8 w-8 cursor-pointer" onClick={() => openModal()}/> : null}
                 </div>
-                <Image src={url} alt="Climb" width={414} height={553} className='h-min' priority={index === 0} placeholder="blur" blurDataURL={`${base64}`}></Image>
+                <Image src={url} alt="Climb" width={414} height={553} className='h-auto' priority={index === 0} placeholder="blur" blurDataURL={`${base64}`}></Image>
                 <div className=" w-11/12 flex justify-between items-center py-2">
                     <h2 className={`${colorVariants[color.toLowerCase() as keyof ColorArray]} text-4xl font-bold text-shadow mx-auto`}>{grade}</h2>
                 </div>
