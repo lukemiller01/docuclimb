@@ -11,11 +11,16 @@ import { pb } from '../functions/pocketbase'
 import logo from '../../public/docuclimb.svg'
 import { LockClosedIcon } from '@heroicons/react/20/solid'
 import { ArrowPathIcon } from '@heroicons/react/24/outline'
+import Link from 'next/link';
+import ErrorMessage from '../Components/ErrorMessage';
 
 export default function Login() {
 
   const [userData, setUserData] = useState({username: '', password: ''});
   const [buttonDisabled, setButtonDisabled] = useState(false);
+
+  // Error
+  const [error, setError] = useState('');
 
   const router = useRouter();
 
@@ -23,12 +28,18 @@ export default function Login() {
     e.preventDefault();
     setButtonDisabled(true);
 
-    await pb.collection('users').authWithPassword(
-      userData.username,
-      userData.password,
-    );
+    try {
+      await pb.collection('users').authWithPassword(
+        userData.username,
+        userData.password,
+      );
 
-    router.push('/app/feed');
+      router.push('/app/feed');
+    } catch (error:any) {
+      setError(error.message);
+    }
+
+    setButtonDisabled(false);
   }
 
   return (
@@ -77,9 +88,9 @@ export default function Login() {
 
             <div className="flex items-center justify-center">
               <div className="text-sm">
-                <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+                <Link href="/recover" className="font-medium text-indigo-600 hover:text-indigo-500">
                   Forgot your password?
-                </a>
+                </Link>
               </div>
             </div>
 
@@ -104,6 +115,7 @@ export default function Login() {
               </a>
             </p>
           </form>
+          {error? <ErrorMessage error={error}/> : null}
         </div>
       </div>
     </>

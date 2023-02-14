@@ -12,8 +12,12 @@ import { useRouter } from 'next/navigation';
 
 // Pocketbase
 import { pb } from '../../functions/pocketbase';
+import ErrorMessage from '../ErrorMessage';
 
 const ResetPassword = ({token}:any) => {
+
+    // Error
+    const [error, setError] = useState('');
 
     const router = useRouter();
 
@@ -29,10 +33,14 @@ const ResetPassword = ({token}:any) => {
     const confirmChange = async(e:any) => {
         e.preventDefault();
         setButtonDisabled(true);
-  
-        await pb.collection('users').confirmPasswordReset(token, passwordData.password, passwordData.confirmPassword,);
-        pb.authStore.clear();
-        router.push('/login');
+
+        try {
+          await pb.collection('users').confirmPasswordReset(token, passwordData.password, passwordData.confirmPassword,);
+          pb.authStore.clear();
+          router.push('/login');
+        } catch (error:any) {
+          setError(error.message);
+        }
 
         setButtonDisabled(false);
     }
@@ -134,6 +142,7 @@ const ResetPassword = ({token}:any) => {
                             </button>
                         </div>
                     </form>
+                    {error? <ErrorMessage error={error}/> : null}
                 </Dialog.Panel>
               </Transition.Child>
             </div>

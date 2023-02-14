@@ -28,7 +28,7 @@ const colorVariants: ColorArray = {
 }
 
 export default function Climb({climb, index}: any) {
-    const { id, grade, color, image, date } = climb || {};
+    const { id, grade, color, image, date, base64 } = climb || {};
     const url = `https://api.docuclimb.com/api/files/boulders/${id}/${image}`
 
     return (
@@ -37,7 +37,7 @@ export default function Climb({climb, index}: any) {
                 <div className="flex items-start py-2">
                     <p className='text-xs'>{date.substring(0, 10)}</p>
                 </div>
-                <Image src={url} alt="Climb" width={400} height={1200} className="h-auto w-auto" priority={index === 0}></Image>
+                <Image src={url} alt="Climb" width={200} height={290} className="h-auto w-auto" priority={index === 0} placeholder="blur" blurDataURL={`${base64}`}></Image>
                 <div className="flex justify-between items-center py-2">
                     <h2 className={`${colorVariants[color.toLowerCase() as keyof ColorArray]} text-4xl font-bold text-shadow mx-auto`}>{grade}</h2>
                 </div>

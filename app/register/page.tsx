@@ -6,20 +6,24 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation';
 import { pb } from '../functions/pocketbase';
-import axios from 'axios';
 
 // Images/icons
 import logo from '../../public/docuclimb.svg'
 import { LockClosedIcon } from '@heroicons/react/20/solid'
 import { ArrowPathIcon, UserCircleIcon  } from '@heroicons/react/24/outline'
+import ErrorMessage from '../Components/ErrorMessage';
 
 export default function Register() {
 
+  // User data
   const [userData, setUserData] = useState({first: '', username: '', email: '', password: '', passwordConfirm: '', featureUpdates: false});
   const [selectedImage, setSelectedImage] = useState<File>();
   const [previewImage, setPreviewImage] = useState("");
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [loadingImage, setLoadingImage] = useState(false);
+
+  // Error
+  const [error, setError] = useState('');
 
   const router = useRouter();
 
@@ -40,16 +44,24 @@ export default function Register() {
     formData.append("featureUpdates", userData.featureUpdates.toString());
     formData.append("description", `Hi, my name is ${userData.first} 🧗‍♂️👋`);
 
-    await axios.post('api/user/create/', formData);
-    
-    await pb.collection('users').requestVerification(userData.email);
-
-    await pb.collection('users').authWithPassword(
-      userData.username,
-      userData.password,
-    );
-
-    router.replace('/app/feed');
+    try {
+      // await axios.post('api/user/create/', formData);
+      await pb.collection('users').create(formData)
+      await pb.collection('users').requestVerification(userData.email);
+      await pb.collection('users').authWithPassword(
+        userData.username,
+        userData.password,
+      );
+  
+      router.replace('/app/feed');
+    } catch (error:any) {
+      setButtonDisabled(false);
+      var errorMessage = '';
+      Object.keys(error.data["data"]).forEach(function(key) {
+        errorMessage = errorMessage + `${error.data["data"][key].message} \n`
+      });
+      setError(errorMessage);
+    }
   }
 
   return (
@@ -208,12 +220,6 @@ export default function Register() {
                   Notify me about new features
                 </label>
               </div>
-
-              <div className="text-sm">
-                <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
-                  Forgot your password?
-                </a>
-              </div>
             </div>
 
             <div>
@@ -237,6 +243,7 @@ export default function Register() {
               </a>
             </p>
           </form>
+          {error? <ErrorMessage error={error}/> : null}
         </div>
       </div>
     </>
