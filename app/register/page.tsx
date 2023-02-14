@@ -12,7 +12,6 @@ import axios from 'axios';
 import logo from '../../public/docuclimb.svg'
 import { LockClosedIcon } from '@heroicons/react/20/solid'
 import { ArrowPathIcon, UserCircleIcon  } from '@heroicons/react/24/outline'
-import avatar from '../../public/avatar.svg'
 
 export default function Register() {
 
@@ -39,6 +38,7 @@ export default function Register() {
     formData.append("password", userData.password);
     formData.append("passwordConfirm", userData.passwordConfirm);
     formData.append("featureUpdates", userData.featureUpdates.toString());
+    formData.append("description", `Hi, my name is ${userData.first} 🧗‍♂️👋`);
 
     await axios.post('api/user/create/', formData);
     

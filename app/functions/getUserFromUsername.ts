@@ -10,6 +10,7 @@ interface User {
     verified: boolean
     avatar: File
     first: string
+    description: string
     featureUpdates: boolean
 }
 

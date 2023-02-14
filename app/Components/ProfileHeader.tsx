@@ -4,10 +4,12 @@
 import React from 'react'
 import Image from 'next/image';
 
+import Link from 'next/link';
+
 // Icons
 import { Cog8ToothIcon } from '@heroicons/react/24/outline'
 
-const ProfileHeader = ({username, profile, first, numClimbs, currentUser}:any) => {
+const ProfileHeader = ({username, profile, first, numClimbs, currentUser, description}:any) => {
   return (
     <div className="flex items-start sm:items-center justify-center py-4 sm:py-8 flex-col px-4">
         <div>
@@ -16,15 +18,12 @@ const ProfileHeader = ({username, profile, first, numClimbs, currentUser}:any) =
                     <Image className="h-24 w-24 rounded-full" src={profile} alt='profile' width={50} height={50} priority={true}/>
                 </div>
                 <div className="col-span-4 flex flex-col gap-4"> 
-                    <div className="text-gray-800 flex flex-col gap-5 items-start sm:flex-row">
+                    <div className="text-gray-800 flex flex-row gap-5 sm:flex-row items-center">
                         <p className="text-2xl">{username}</p>
                         {username === currentUser?
-                        <div className='flex flex-row gap-5'>
-                            <button className="text-xs font-bold border border-gray-300 p-2 rounded">
-                                Edit Profile
-                            </button>
-                            <Cog8ToothIcon className=' w-6'/>
-                        </div> : null
+                        <Link className='flex flex-row gap-5' href={`/app/profile/${currentUser}/edit`}>
+                            <Cog8ToothIcon className='w-6'/>
+                        </Link> : null
                         }
                     </div>
                     <div className="text-gray-800 flex flex-row gap-5 sm:gap-10 items-center">
@@ -38,7 +37,7 @@ const ProfileHeader = ({username, profile, first, numClimbs, currentUser}:any) =
                     
                     <div className="text-gray-800 flex-col hidden sm:flex"> 
                         <p className="font-bold">{first}</p>
-                        <p>Hi there!</p>
+                        <p>{description}</p>
                     </div>
                 </div>
             </div>

@@ -25,7 +25,6 @@ export default function CreateModal({isOpen, closeModal, actionType, id, climb, 
   const [previewImage, setPreviewImage] = useState(climb? url : "");
 
   const [baseImage, setBaseImage] = useState<File>();
-  const [base64Text, setBase64Text] = useState("")
 
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [loadingImage, setLoadingImage] = useState(false);
