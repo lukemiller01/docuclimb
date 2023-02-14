@@ -15,6 +15,7 @@ module.exports = {
       'brand-green-tint': '#047035',
       'grey': '#9A9A9A',
       'light-grey': '#f0f0f0',
+      'red-accent': '#cc0000',
 
       'white': '#ffffff',
       'black': '#000000',

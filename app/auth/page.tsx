@@ -5,9 +5,11 @@ import { redirect } from 'next/navigation';
 
 // Import pocketbase
 import { pb } from '../functions/pocketbase';
-import AuthModal from '../Components/AuthModal';
+import VerifyEmail from '../Components/Authentication/VerifyEmail';
+import UpdateEmail from '../Components/Authentication/UpdateEmail';
+import ResetPassword from '../Components/Authentication/ResetPassword';
 
-async function getClimbs(token:string) {
+async function getVerified(token:string) {
 
   // Get all climb data
   try {
@@ -20,15 +22,18 @@ async function getClimbs(token:string) {
   }
 }
 
-export default async function Auth({params, searchParams,}: {params: { slug: string }; searchParams?: { [key: string]: string | string[] | undefined };}) {
+export default async function Auth({searchParams,}: {searchParams?: { [key: string]: string | string[] | undefined };}) {
 
   // If there's no search params / redirect to home
   if(searchParams === undefined || !searchParams.mode || !searchParams.token) {
     redirect('/');
   }
 
-  // If the search params are valid
-  const result = await getClimbs(searchParams['token'] as string);
+  // If the user is verifying their email
+  var result;
+  if(searchParams.mode === 'verifyEmail') {
+    result = await getVerified(searchParams['token'] as string);
+  }
 
   return (
     <>
@@ -58,7 +63,9 @@ export default async function Auth({params, searchParams,}: {params: { slug: str
             </defs>
           </svg>
       </div>
-      <AuthModal result={result}/>
+      { searchParams.mode === 'verifyEmail' ? <VerifyEmail result={result}/> : null}
+      { searchParams.mode === 'updateEmail' ? <UpdateEmail token={searchParams.token}/> : null}
+      { searchParams.mode === 'resetPassword' ? <ResetPassword token={searchParams.token}/> : null}
       <div className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]">
             <svg
               className="relative left-[calc(50%+3rem)] h-[21.1875rem] max-w-none -translate-x-1/2 sm:left-[calc(50%+36rem)] sm:h-[42.375rem]"

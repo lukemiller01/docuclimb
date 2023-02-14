@@ -5,21 +5,24 @@ import React from 'react';
 import { useState } from 'react';
 import Image from 'next/image';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 // Pocketbase
-import { pb } from '../functions/pocketbase';
+import { pb } from '../../functions/pocketbase';
 
 // Arrow icons
 import { ArrowPathIcon, UserCircleIcon  } from '@heroicons/react/24/outline';
 
-export default function ModifyProfile( { id, username, email, first, description, profile, token }:any ) {
+export default function ModifyProfile( { id, username, first, description, profile, token }:any ) {
 
-    const [userData, setUserData] = useState({first: first, username: username, email: email, description: description});
+    const [userData, setUserData] = useState({first: first, username: username, description: description});
 
     const [loadingImage, setLoadingImage] = useState(false);
     const [previewImage, setPreviewImage] = useState(profile);
     const [selectedImage, setSelectedImage] = useState<File>();
     const [buttonDisabled, setButtonDisabled] = useState(false);
+
+    const router = useRouter();
 
     const update = async(e:any) => {
         e.preventDefault();
@@ -32,7 +35,6 @@ export default function ModifyProfile( { id, username, email, first, description
         }
         formData.append("first", userData.first);
         formData.append("username", userData.username);
-        formData.append("email", userData.email);
         formData.append("description", userData.description);
 
         // To validate the request
@@ -44,12 +46,9 @@ export default function ModifyProfile( { id, username, email, first, description
             }
         });
 
-        // Refreshes cookie
-        // TODO: if the username changes, the URL must also change.
-        // using the "back" button on the browser goes to the URL of the old username
-        await pb.collection('users').authRefresh();
-        // TODO: implement "saved" when complete
+        await pb.collection('users').authRefresh(); // Updates cookie
         setButtonDisabled(false);
+        router.push(`/app/profile/${userData.username}`); // Navigates to updated username profile
     }
 
   return (
@@ -82,20 +81,6 @@ export default function ModifyProfile( { id, username, email, first, description
                         </div>
 
                         <div>
-                            <label htmlFor="email" className="sr-only">email</label>
-                            <input
-                            id="email"
-                            type="text"
-                            autoComplete="email"
-                            required
-                            value={userData.email}
-                            className="relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                            placeholder="Email"
-                            onChange={(e) => setUserData({...userData, email: e.target.value})}
-                            />
-                        </div>
-
-                        <div>
                             <label htmlFor="username" className="sr-only">username</label>
                             <input
                             id="username"
@@ -114,7 +99,7 @@ export default function ModifyProfile( { id, username, email, first, description
                             <div className="mt-4 flex items-center justify-center">
                             {loadingImage 
                                 ? <ArrowPathIcon className="animate-spin h-12 w-12"></ArrowPathIcon>
-                                : previewImage? <div className='w-12 h-12 relative'><Image src={previewImage} alt='uploaded image' fill className='object-cover rounded-[50%]'></Image></div>: <UserCircleIcon className=' h-12 w-12'/>
+                                : previewImage? <div className='w-12 h-12 relative'><Image src={previewImage} alt='uploaded image' fill sizes='5vw' className='object-cover rounded-[50%]' priority={true}></Image></div>: <UserCircleIcon className=' h-12 w-12'/>
                             }
                                 <label
                                 htmlFor="file-upload"
@@ -181,7 +166,7 @@ export default function ModifyProfile( { id, username, email, first, description
                         <div className='flex justify-end'>
                             <button
                                 type="submit"
-                                className="relative rounded-md border border-transparent bg-brand-green py-2 px-4 text-sm font-medium text-white hover:bg-brand-green-tint"
+                                className="w-36 truncate relative rounded-md border border-transparent bg-brand-green py-2 px-4 text-sm font-medium text-white hover:bg-brand-green-tint"
                                 disabled={buttonDisabled}
                             >
                                 {buttonDisabled

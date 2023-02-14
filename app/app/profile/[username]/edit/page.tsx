@@ -4,7 +4,9 @@ import { cookies } from 'next/headers';
 import { getUserFromCookie } from '../../../../functions/getUserFromCookie';
 
 // Components
-import ModifyProfile from '@/app/Components/ModifyProfile'
+import ModifyProfile from '@/app/Components/EditProfile/ModifyProfile'
+import ResetCredentials from '@/app/Components/EditProfile/ResetCredentials';
+import DeleteAccount from '@/app/Components/EditProfile/DeleteAccount';
 
 export default function Edit() {
 
@@ -22,6 +24,8 @@ export default function Edit() {
   return (
       <>
         <ModifyProfile id={id} username={username} email={email} first={first} description={description} profile={profile} token={token}/>
+        <ResetCredentials email={email}/>
+        <DeleteAccount id={id}/>
       </>
     )
 }

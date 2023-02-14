@@ -1,15 +1,16 @@
-'use client'
-import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useState } from 'react'
+'use client';
+import { Dialog, Transition } from '@headlessui/react';
+import { Fragment, useState } from 'react';
 
 // Images / icons
-import { ArrowPathIcon } from '@heroicons/react/24/outline'
+import { ArrowPathIcon } from '@heroicons/react/24/outline';
+
 import { useRouter } from 'next/navigation';
 
 // Pocketbase
-import { pb } from '../functions/pocketbase';
+import { pb } from '../../functions/pocketbase';
 
-export default function AuthModal({result}:any) {
+export default function VerifyEmail({result}:any) {
 
   const router = useRouter();
 
