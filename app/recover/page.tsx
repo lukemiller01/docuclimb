@@ -26,6 +26,7 @@ export default function Login() {
   const recover = async(e:any) => {
     e.preventDefault();
     setButtonDisabled(true);
+    setError('');
 
     try {
       await pb.collection('users').requestPasswordReset(email);

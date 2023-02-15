@@ -33,6 +33,7 @@ const UpdateEmail = ({token}:any) => {
     const confirmChange = async(e:any) => {
         e.preventDefault();
         setButtonDisabled(true);
+        setError('');
 
         try {
           await pb.collection('users').confirmEmailChange(token, password);

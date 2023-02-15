@@ -1,4 +1,7 @@
-'use client' // TODO: make this component a react server component? Export landing page navbar. Follow up on Get Started button
+'use client'
+
+export const dynamic='force-dynamic';
+
 import { useState } from 'react'
 import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'

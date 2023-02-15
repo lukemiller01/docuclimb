@@ -42,6 +42,7 @@ export default function Register() {
   const login = async(e:any) => {
     e.preventDefault();
     setButtonDisabled(true);
+    setError('');
 
     // Set formData for internal API
     const formData = new FormData();

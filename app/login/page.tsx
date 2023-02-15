@@ -27,6 +27,7 @@ export default function Login() {
   const login = async(e:any) => {
     e.preventDefault();
     setButtonDisabled(true);
+    setError('');
 
     try {
       await pb.collection('users').authWithPassword(
