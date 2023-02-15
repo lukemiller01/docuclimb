@@ -3,36 +3,30 @@ import Climb from './Climb';
 
 // Functions
 import { cookies } from 'next/headers';
-import { getUserFromCookie } from '../../functions/getUserFromCookie';
-import { getUserFromId } from '../../functions/getUserFromId';
-
-import { pb } from '../../functions/pocketbase'
+import { getUserFromCookie } from '../../Pocketbasefunctions/getUserFromCookie';
+import { getUserFromId } from '../../Pocketbasefunctions/getUserFromId';
 
 function getProfile() {
     const auth = getUserFromCookie(cookies());
     return auth;
 }
 
+// Fetch climb data from Pocketbase
 async function getClimbs() {
-
-    // Get all climb data
     try {
         const res = await fetch('https://api.docuclimb.com/api/collections/boulders/records?page=1&perPage=30',
             {cache: 'no-store'}
         );
         const data = await res.json();
-        // const res = await pb.collection('boulders').getList(1, 30);
-        // const data = res as unknown as JSON;
-        // const data = await res.json();
-        // console.log(typeof data)
-
-        // Append the imageURL and username from the PB user collection
         for (let i = 0; i < data.items.length; i++) {
+            // For every climb, add an avatar & username to include in post
+            // This data is not stored in the boulder model
             let user = await getUserFromId(data.items[i].uid);
-            if(user) {
+            if(user) { // Assert user is not empty
                 let username = user.username;
                 data.items[i]['username'] = username;
 
+                // If the user chose not to upload an image, use a stock image
                 if(user.avatar) {
                     var imageURL = `https://api.docuclimb.com/api/files/_pb_users_auth_/${user.id}/${user.avatar}`;
                 }
@@ -49,6 +43,7 @@ async function getClimbs() {
       }
 }
 
+// Get climbs and adds to feed
 export default async function Boulders() {
 
     // Get all climbs
@@ -66,5 +61,5 @@ export default async function Boulders() {
                 );
             })}
         </div>
-        )
+    )
 }

@@ -1,5 +1,8 @@
-import ProfileHeaderSkeleton from '@/app/Components/ProfileHeaderSkeleton'
-import ProfileSkeleton from '@/app/Components/ProfileSkeleton'
+// Components:
+import ProfileHeaderSkeleton from '@/app/Components/Skeletons/ProfileHeaderSkeleton'
+import ProfileSkeleton from '@/app/Components/Skeletons/ProfileSkeleton'
+
+// Functional:
 import React from 'react'
 
 const loading = () => {

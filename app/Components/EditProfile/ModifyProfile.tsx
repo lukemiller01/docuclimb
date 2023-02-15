@@ -8,7 +8,7 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
 // Pocketbase
-import { pb } from '../../functions/pocketbase';
+import { pb } from '../../Pocketbasefunctions/pocketbase';
 
 // Arrow icons
 import { ArrowPathIcon, UserCircleIcon  } from '@heroicons/react/24/outline';
@@ -36,16 +36,9 @@ export default function ModifyProfile( { id, username, first, description, profi
         formData.append("first", userData.first);
         formData.append("username", userData.username);
         formData.append("description", userData.description);
-
-        // To validate the request
         formData.append("uid", id);
-    
-        await axios.patch(`../../../api/user/edit/${id}`, formData, {
-            headers: {
-              'Authorization': token,
-            }
-        });
-
+        await pb.collection('users').update(id, formData);
+        router.refresh();
         await pb.collection('users').authRefresh(); // Updates cookie
         setButtonDisabled(false);
         router.push(`/app/profile/${userData.username}`); // Navigates to updated username profile
@@ -170,7 +163,7 @@ export default function ModifyProfile( { id, username, first, description, profi
                                 disabled={buttonDisabled}
                             >
                                 {buttonDisabled
-                                            ? <ArrowPathIcon className="animate-spin h-5 w-5"></ArrowPathIcon>
+                                            ? <ArrowPathIcon className="animate-spin h-5 w-5 mx-auto"></ArrowPathIcon>
                                             : 'Update Profile' }
                             </button>
                         </div>

@@ -1,4 +1,7 @@
-import EditProfileSkeleton from '@/app/Components/EditProfileSkeleton'
+// Component:
+import EditProfileSkeleton from '@/app/Components/Skeletons/EditProfileSkeleton'
+
+// Functional:
 import React from 'react'
 
 const loading = () => {

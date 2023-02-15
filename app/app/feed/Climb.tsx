@@ -1,4 +1,5 @@
 'use client'
+
 // Icons
 import { EllipsisHorizontalIcon } from '@heroicons/react/24/outline'
 
@@ -8,8 +9,9 @@ import Image from 'next/image';
 import { useState } from 'react'
 
 // Components
-import CreateModal from '../../Components/CreateModal';
+import CreateModal from '@/app/Components/ClimbModal/CreateModal';
 
+// Setting types
 interface ColorArray {
     red: string;
     orange: string;
@@ -22,6 +24,7 @@ interface ColorArray {
     black: string;
 }
 
+// using the array to set the color of the text as a Tailwind class
 const colorVariants: ColorArray = {
     red: 'text-climb-red',
     orange: 'text-climb-orange',
@@ -34,6 +37,10 @@ const colorVariants: ColorArray = {
     black: 'text-black',
 }
 
+// Imports:
+    // A climb object
+    // The index of the climb (to set next/image priority)
+    // The ID of the current user to check if it's their post (hiding/showing edit button)
 export default function Climb({climb, index, currentUser}: any) {
     const { id, grade, color, image, base64, date, username, imageUrl, uid } = climb || {};
     const url = `https://api.docuclimb.com/api/files/boulders/${id}/${image}`
@@ -55,7 +62,7 @@ export default function Climb({climb, index, currentUser}: any) {
             <div className="flex items-center flex-col bg-white rounded-2xl px-4">
                 <div className=" w-full flex justify-between items-center py-2">
                     <Link href={`/app/profile/${username}`} className='flex flex-row items-center gap-2'>
-                        <Image className="h-8 w-8 rounded-full" src={imageUrl} alt='profile' width={50} height={50}/>
+                        <div className='w-8 h-8 relative'><Image src={imageUrl} alt='profile' fill sizes='5vw' className='object-cover rounded-[50%]'></Image></div>
                         <div className='flex flex-col x-sm:flex-row x-sm:gap-2 items-start'>
                             <p className='text-sm font-bold hover:text-grey'>{username}</p>
                             <p className='text-sm font-bold hidden x-sm:block'>•</p>

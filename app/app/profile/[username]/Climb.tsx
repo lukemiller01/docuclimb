@@ -27,6 +27,9 @@ const colorVariants: ColorArray = {
     black: 'text-black',
 }
 
+// Indidivual climb on the profile page.
+// This is very close to the individual climb on the feed page.
+// See feed/Climb.tsx for details.
 export default function Climb({climb, index}: any) {
     const { id, grade, color, image, date, base64 } = climb || {};
     const url = `https://api.docuclimb.com/api/files/boulders/${id}/${image}`

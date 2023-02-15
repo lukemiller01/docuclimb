@@ -1,4 +1,7 @@
-import ClimbSkeleton from '@/app/Components/ClimbSkeleton'
+// Component:
+import ClimbSkeleton from '@/app/Components/Skeletons/ClimbSkeleton'
+
+// Functional
 import React from 'react'
 
 const loading = () => {

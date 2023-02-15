@@ -7,7 +7,7 @@ import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import logo from '../public/docuclimb.svg'
 import Image from 'next/image';
-import FAQ from './Components/FAQ'
+import FAQ from './Components/LandingPage/FAQ'
 
 const navigation = [
   { name: 'Home', href: '/' },
@@ -81,7 +81,7 @@ export default function Home() {
             <div className="flex items-center justify-between">
               <a href="/" className="-m-1.5 p-1.5">
                 <span className="sr-only">Docuclimb</span>
-                <Image className='h-8' src={logo} alt='docuclimb logo' width={50} height={50}/>
+                <Image className='h-8' src={logo} alt='docuclimb logo' width={32} height={32}/>
               </a>
               <button
                 type="button"

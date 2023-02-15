@@ -1,12 +1,16 @@
+// Functional:
 import Link from 'next/link'
 
+// Auth:
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { getUserFromCookie } from '../functions/getUserFromCookie';
+import { getUserFromCookie } from '../Pocketbasefunctions/getUserFromCookie';
+import { getUserFromId } from '../Pocketbasefunctions/getUserFromId';
 
+// Components:
 import Navbar from '../Components/Navbar'
-import { getUserFromId } from '../functions/getUserFromId';
 
+// Layout for internal application (auth-protected)
 export default async function DashboardLayout({children} : {children: React.ReactNode}) {
 
   const user = getUserFromCookie(cookies());

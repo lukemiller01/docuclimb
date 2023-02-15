@@ -12,9 +12,9 @@ import { Fragment, useState } from 'react'
 import Link from "next/link";
 
 // Components
-import CreateModal from './CreateModal';
+import CreateModal from './ClimbModal/CreateModal';
 
-import { pb } from '../functions/pocketbase'
+import { pb } from '../Pocketbasefunctions/pocketbase'
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ')
@@ -27,7 +27,6 @@ export default function Navbar({profile, username, currentUser, base64}:any) {
 
   const navigation = [
     { name: 'Feed', href: '/app/feed' },
-    { name: 'Progress', href: '/app/progress' },
   ]
 
   let [isOpen, setIsOpen] = useState(false)

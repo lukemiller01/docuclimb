@@ -1,16 +1,18 @@
 'use client'
 
-// Functional
+// Functional:
 import React from 'react'
 import { useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation';
-import { pb } from '../functions/pocketbase';
+import { pb } from '../Pocketbasefunctions/pocketbase';
 
-// Images/icons
+// Images/icons:
 import logo from '../../public/docuclimb.svg'
 import { LockClosedIcon } from '@heroicons/react/20/solid'
 import { ArrowPathIcon, UserCircleIcon  } from '@heroicons/react/24/outline'
+
+// Components:
 import ErrorMessage from '../Components/ErrorMessage';
 
 export default function Register() {
@@ -66,7 +68,6 @@ export default function Register() {
     formData.append("description", `Hi, my name is ${userData.first} 🧗‍♂️👋`);
 
     try {
-      // await axios.post('api/user/create/', formData);
       await pb.collection('users').create(formData)
       await pb.collection('users').requestVerification(userData.email);
       await pb.collection('users').authWithPassword(

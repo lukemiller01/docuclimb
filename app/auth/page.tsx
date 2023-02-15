@@ -1,17 +1,21 @@
 import React from 'react'
 
+// Since users are being redirected from Postmark's "safe address" feature
+// The below line is required. See below:
+// https://github.com/vercel/next.js/issues/43077
 export const dynamic='force-dynamic';
 
 import { redirect } from 'next/navigation';
 
 // Import pocketbase
-import { pb } from '../functions/pocketbase';
+import { pb } from '../Pocketbasefunctions/pocketbase';
 
 // Modals
 import VerifyEmail from '../Components/Authentication/VerifyEmail';
 import UpdateEmail from '../Components/Authentication/UpdateEmail';
 import ResetPassword from '../Components/Authentication/ResetPassword';
 
+// Checks if the token is valid, if the user is trying to validate their email
 async function getVerified(token:string) {
 
   // Get all climb data
@@ -24,6 +28,7 @@ async function getVerified(token:string) {
   }
 }
 
+// Display corrrect UI based on the mode
 export default async function Auth({searchParams,}: {searchParams?: { [key: string]: string | string[] | undefined };}) {
 
   // If there's no search params / redirect to home

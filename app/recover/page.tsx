@@ -5,15 +5,18 @@ import React from 'react'
 import { useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation';
-import { pb } from '../functions/pocketbase'
+import { pb } from '../Pocketbasefunctions/pocketbase'
 
 // Images/icons
 import logo from '../../public/docuclimb.svg'
 import { LockClosedIcon } from '@heroicons/react/20/solid'
 import { ArrowPathIcon } from '@heroicons/react/24/outline'
+
+// Components:
 import ErrorMessage from '../Components/ErrorMessage';
 
-export default function Login() {
+// Allows users to recover their account if they forgot a password
+export default function Recover() {
 
   const [email, setEmail] = useState('');
   const [buttonDisabled, setButtonDisabled] = useState(false);

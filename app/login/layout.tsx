@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { getUserFromCookie } from '../functions/getUserFromCookie';
+import { getUserFromCookie } from '../Pocketbasefunctions/getUserFromCookie';
 
 export default function LoginLayout({children} : {children: React.ReactNode}) {
 

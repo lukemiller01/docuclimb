@@ -1,23 +1,26 @@
+// Functional
 import React from 'react'
-import Climb from './Climb';
-import ProfileHeader from '@/app/Components/ProfileHeader';
 
 // Auth
 import { cookies } from 'next/headers';
-import { getUserFromUsername } from '@/app/functions/getUserFromUsername';
-import { getUserFromCookie } from '@/app/functions/getUserFromCookie';
-import NoClimbsYet from '@/app/Components/NoClimbsYet';
-import AddAClimb from '@/app/Components/AddAClimb';
+import { getUserFromUsername } from '@/app/Pocketbasefunctions/getUserFromUsername';
+import { getUserFromCookie } from '@/app/Pocketbasefunctions/getUserFromCookie';
+
+// Components
+import Climb from './Climb';
+import ProfileHeader from '@/app/Components/Profile/ProfileHeader';
+import NoClimbsYet from '@/app/Components/Profile/NoClimbsYet';
+import AddAClimb from '@/app/Components/Profile/AddAClimb';
 
 // Gets the climbs for the current profile
 async function getClimbs(id: any): Promise<any[]> {
   const res = await fetch('https://api.docuclimb.com/api/collections/boulders/records?page=1&perPage=30',
-      {cache: 'no-store'}
+    {cache: 'no-store'}
   );
 
   const data = await res.json();
 
-  // Filter the climbs that don't belong to the user
+  // Filter out the climbs that don't belong to the user
   var filteredData = data.items.filter((a:any) => a.uid === id );
   data.items = filteredData;
 

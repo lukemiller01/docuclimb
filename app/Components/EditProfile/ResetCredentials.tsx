@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 // Pocketbase
-import { pb } from '../../functions/pocketbase';
+import { pb } from '../../Pocketbasefunctions/pocketbase';
 
 // Arrow icons
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
