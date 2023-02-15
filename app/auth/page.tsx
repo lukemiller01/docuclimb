@@ -1,4 +1,3 @@
-// 'use client'
 import React from 'react'
 
 import { redirect } from 'next/navigation';
@@ -19,17 +18,14 @@ async function getVerified(token:string) {
     return true;
   }
   catch (error) {
-    console.log(error);
     return false;
   }
 }
 
 export default async function Auth({searchParams,}: {searchParams?: { [key: string]: string | string[] | undefined };}) {
 
-  console.log(searchParams);
-
   // If there's no search params / redirect to home
-  if(searchParams === undefined || !searchParams.mode || !searchParams.token) {
+  if(searchParams === undefined || !searchParams['token'] || !searchParams['mode']) {
     redirect('/');
   }
 

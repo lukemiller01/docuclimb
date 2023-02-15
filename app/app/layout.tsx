@@ -27,7 +27,7 @@ export default function DashboardLayout({children} : {children: React.ReactNode}
       <Navbar profile={profile} username={username} currentUser={id}/>
       <nav>
         <Link href="/app/feed"></Link>
-        <Link href={`/app/profile${username}`}/>
+        <Link href={`/app/profile/${username}`}/>
       </nav>
       {children}
     </>

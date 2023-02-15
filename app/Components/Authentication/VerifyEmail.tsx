@@ -12,17 +12,14 @@ import { pb } from '../../functions/pocketbase';
 
 export default function VerifyEmail({result}:any) {
 
-
   const router = useRouter();
 
   function closeModal() {
-    setIsOpen(false);
     router.push('/');
   }
 
   const [buttonDisabled, setButtonDisabled] = useState(false); // Is the button disabled?
   const [email, setEmail] = useState(''); // User input
-  const [isOpen, setIsOpen] = useState(true); // If the modal is open (needs refactor)
   const [sent, setSent] = useState(false) // Was a message sent?
 
   const resend = async(e:any) => {
@@ -37,7 +34,7 @@ export default function VerifyEmail({result}:any) {
 
   return (
     <>
-      <Transition appear show={isOpen} as={Fragment}>
+      <Transition appear show={true} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={closeModal}>
           <Transition.Child
             as={Fragment}
