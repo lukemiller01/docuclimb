@@ -14,11 +14,10 @@ async function getVerified(token:string) {
   // Get all climb data
   try {
     const result = await pb.collection('users').confirmVerification(token);
-    return 'true';
+    return true;
   }
   catch (error) {
-    console.log('Error:', error);
-    return 'false'
+    return false;
   }
 }
 

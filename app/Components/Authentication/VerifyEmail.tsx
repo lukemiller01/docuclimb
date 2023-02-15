@@ -12,6 +12,7 @@ import { pb } from '../../functions/pocketbase';
 
 export default function VerifyEmail({result}:any) {
 
+
   const router = useRouter();
 
   function closeModal() {
