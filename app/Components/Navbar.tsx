@@ -20,7 +20,7 @@ function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Navbar({profile, username, currentUser}:any) {
+export default function Navbar({profile, username, currentUser, base64}:any) {
 
   const router = useRouter();
   const pathname = usePathname();
@@ -107,7 +107,7 @@ export default function Navbar({profile, username, currentUser}:any) {
                   <div>
                     <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                       <span className="sr-only">Open user menu</span>
-                      <Image className="h-8 w-8 rounded-full" src={profile} alt='profile' width={50} height={50} priority={true}/>
+                      <div className='w-8 h-8 relative'><Image src={profile} alt='profile' fill sizes='5vw' className='object-cover rounded-[50%]' priority={true} placeholder="blur" blurDataURL={`${base64}`}></Image></div>
                     </Menu.Button>
                   </div>
                   <Transition

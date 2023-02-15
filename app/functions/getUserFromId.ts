@@ -12,6 +12,7 @@ interface User {
     first: string
     description: string
     featureUpdates: boolean
+    base64: string
 }
 
 async function getUserFromId(id: string) {

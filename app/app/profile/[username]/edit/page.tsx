@@ -7,6 +7,9 @@ import { getUserFromCookie } from '../../../../functions/getUserFromCookie';
 import ModifyProfile from '@/app/Components/EditProfile/ModifyProfile'
 import ResetCredentials from '@/app/Components/EditProfile/ResetCredentials';
 import DeleteAccount from '@/app/Components/EditProfile/DeleteAccount';
+import EditProfileSkeleton from '@/app/Components/EditProfileSkeleton';
+
+
 
 export default function Edit() {
 

@@ -5,8 +5,9 @@ import { redirect } from 'next/navigation';
 import { getUserFromCookie } from '../functions/getUserFromCookie';
 
 import Navbar from '../Components/Navbar'
+import { getUserFromId } from '../functions/getUserFromId';
 
-export default function DashboardLayout({children} : {children: React.ReactNode}) {
+export default async function DashboardLayout({children} : {children: React.ReactNode}) {
 
   const user = getUserFromCookie(cookies());
 
@@ -14,9 +15,12 @@ export default function DashboardLayout({children} : {children: React.ReactNode}
     redirect("/login");
   }
 
-  const { id, avatar, username } = user || {};
-  if(avatar) {
-    var profile = `https://api.docuclimb.com/api/files/_pb_users_auth_/${id}/${avatar}`
+  const { id, username } = user || {};
+  
+  const userModel = await getUserFromId(id);
+
+  if(userModel?.avatar) {
+    var profile = `https://api.docuclimb.com/api/files/_pb_users_auth_/${id}/${userModel?.avatar}`
   }
   else{
     var profile = '/avatar.svg'
@@ -24,7 +28,7 @@ export default function DashboardLayout({children} : {children: React.ReactNode}
 
   return (
     <>
-      <Navbar profile={profile} username={username} currentUser={id}/>
+      <Navbar profile={profile} username={username} currentUser={id} base64={userModel?.base64}/>
       <nav>
         <Link href="/app/feed"></Link>
         <Link href={`/app/profile/${username}`}/>

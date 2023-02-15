@@ -9,13 +9,13 @@ import Link from 'next/link';
 // Icons
 import { Cog8ToothIcon } from '@heroicons/react/24/outline'
 
-const ProfileHeader = ({username, profile, first, numClimbs, currentUser, description}:any) => {
+const ProfileHeader = ({username, profile, first, numClimbs, currentUser, description, base64}:any) => {
   return (
     <div className="flex items-start sm:items-center justify-center py-4 sm:py-8 flex-col px-4">
         <div>
             <div className="flex flex-row">
                 <div className="object-center mr-4">
-                    <Image className="h-24 w-24 rounded-full" src={profile} alt='profile' width={50} height={50} priority={true}/>
+                    <div className='w-24 h-24 relative'><Image src={profile} alt='profile' fill sizes='20vw' className='object-cover rounded-[50%]' priority={true} placeholder="blur" blurDataURL={`${base64}`}></Image></div>
                 </div>
                 <div className="col-span-4 flex flex-col gap-4"> 
                     <div className="text-gray-800 flex flex-row gap-5 sm:flex-row items-center">

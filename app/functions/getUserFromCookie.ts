@@ -1,18 +1,18 @@
-// import { ReadonlyRequestCookies } from 'next/dist/server/app-render';
 import { pb } from './pocketbase'
 
 interface User {
-    id: string
-    created: Date
-    updated: Date
-    username: string
-    email: string
-    emailVisibility: boolean
-    verified: boolean
-    avatar: File
-    first: string
-    description: string
-    featureUpdates: boolean
+  id: string
+  created: Date
+  updated: Date
+  username: string
+  email: string
+  emailVisibility: boolean
+  verified: boolean
+  avatar: File
+  first: string
+  description: string
+  featureUpdates: boolean
+  base64: string
 }
 
 function getUserFromCookie(cookies: any): User | null {

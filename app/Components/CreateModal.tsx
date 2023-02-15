@@ -40,7 +40,7 @@ export default function CreateModal({isOpen, closeModal, actionType, id, climb, 
         }
         fr.readAsDataURL(file);
     });
-}
+  }
 
   const addClimb = async(e:any) => {
     e.preventDefault();
@@ -48,7 +48,7 @@ export default function CreateModal({isOpen, closeModal, actionType, id, climb, 
 
     // Set formData for internal API
     const formData = new FormData();
-    if(selectedImage && baseImage) {
+    if(selectedImage) {
       formData.append("image", selectedImage);
       const modified = new Date(selectedImage.lastModified).toISOString().replace('T', ' ');
       formData.append("date", modified);
@@ -133,7 +133,7 @@ export default function CreateModal({isOpen, closeModal, actionType, id, climb, 
                                           setLoadingImage(true);
                                           var imageFile = target.files[0];
 
-                                          // If the image is an heic file
+                                          // If the image is an heic file, convert it into a blob
                                           if (imageFile.type === "image/heic") {
                                             // Get the params from the file
                                             const lastModified = imageFile.lastModified;
@@ -146,27 +146,33 @@ export default function CreateModal({isOpen, closeModal, actionType, id, climb, 
                                             // Set the file again
                                             imageFile = newBlob;
                                           }
-                                          if(imageFile.size > 3000000) {
+
+                                          const imageCompression = (await import("browser-image-compression")).default;
+
+                                          // Compress image into base64 for blur preview
+                                          const options2 = { // Set the maximum file size
+                                            maxWidthOrHeight: 50,
+                                            useWebWorker: true
+                                          }
+                                          const compressedFile2 = await imageCompression(imageFile, options2);
+                                          setBaseImage(compressedFile2);
+
+                                          // If the file size is larger than 1MB, compress to ~1MB
+                                          if(imageFile.size > 1000000) {
                                             // Clip the size of the image
                                             const options = { // Set the maximum file size
                                               maxSizeMB: 1,
                                               useWebWorker: true
                                             }
-                                            const options2 = { // Set the maximum file size
-                                              maxWidthOrHeight: 50,
-                                              useWebWorker: true
-                                            }
                                             try { // Compress the image.
-                                              const imageCompression = (await import("browser-image-compression")).default;
                                               const compressedFile = await imageCompression(imageFile, options);
-                                              const compressedFile2 = await imageCompression(imageFile, options2);
-                                              setBaseImage(compressedFile2);
                                               imageFile = compressedFile;
                                             } catch (error) {
                                               console.log(error);
                                             }
                                           }
 
+                                          // Finish image computations
                                           setLoadingImage(false);
                                           setSelectedImage(imageFile);
 

@@ -21,11 +21,23 @@ export default function Register() {
   const [previewImage, setPreviewImage] = useState("");
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [loadingImage, setLoadingImage] = useState(false);
+  const [baseImage, setBaseImage] = useState<File>();
 
   // Error
   const [error, setError] = useState('');
 
   const router = useRouter();
+
+  function readAsDataURL(file:File) {
+    return new Promise((resolve, reject) => {
+        const fr = new FileReader();
+        fr.onerror = reject;
+        fr.onload = () => {
+            resolve(fr.result);
+        }
+        fr.readAsDataURL(file);
+    });
+  }
 
   const login = async(e:any) => {
     e.preventDefault();
@@ -35,6 +47,14 @@ export default function Register() {
     const formData = new FormData();
     if(selectedImage) {
       formData.append("avatar", selectedImage);
+    }
+    if(baseImage) {
+      try {
+        const base64 = await readAsDataURL(baseImage) as string;
+        formData.append("base64", base64);
+      } catch (error) {
+          console.log(error)
+      }
     }
     formData.append("first", userData.first);
     formData.append("username", userData.username);
@@ -167,7 +187,7 @@ export default function Register() {
                           setLoadingImage(true);
                           var imageFile = target.files[0];
 
-                          // If the image is an heic file
+                          // If the image is an heic file, convert it into a blob
                           if (imageFile.type === "image/heic") {
                             // Get the params from the file
                             const lastModified = imageFile.lastModified;
@@ -180,14 +200,25 @@ export default function Register() {
                             // Set the file again
                             imageFile = newBlob;
                           }
-                          if(imageFile.size > 3000000) {
+
+                          const imageCompression = (await import("browser-image-compression")).default;
+
+                          // Compress image into base64 for blur preview
+                          const options2 = { // Set the maximum file size
+                            maxWidthOrHeight: 50,
+                            useWebWorker: true
+                          }
+                          const compressedFile2 = await imageCompression(imageFile, options2);
+                          setBaseImage(compressedFile2);
+
+                          // If the file size is larger than 1MB, compress to ~1MB
+                          if(imageFile.size > 1000000) {
                             // Clip the size of the image
                             const options = { // Set the maximum file size
                               maxSizeMB: 1,
                               useWebWorker: true
                             }
                             try { // Compress the image.
-                              const imageCompression = (await import("browser-image-compression")).default;
                               const compressedFile = await imageCompression(imageFile, options);
                               imageFile = compressedFile;
                             } catch (error) {
@@ -195,6 +226,7 @@ export default function Register() {
                             }
                           }
 
+                          // Finish image computations
                           setLoadingImage(false);
                           setSelectedImage(imageFile);
 

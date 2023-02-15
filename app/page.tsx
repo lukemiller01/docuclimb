@@ -9,7 +9,6 @@ import FAQ from './Components/FAQ'
 const navigation = [
   { name: 'Home', href: '/' },
   { name: 'App', href: '/app/feed' },
-  { name: 'Demo', href: '/demo' },
 ]
 
 export default function Home() {
@@ -133,9 +132,9 @@ export default function Home() {
                 >
                   Get started
                 </a>
-                <a href="/demo" className="text-base font-semibold leading-7 text-gray-900">
+                {/* <a href="/demo" className="text-base font-semibold leading-7 text-gray-900">
                   Learn more <span aria-hidden="true">→</span>
-                </a>
+                </a> */}
               </div>
             </div>
           </div>

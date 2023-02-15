@@ -9,7 +9,6 @@ export default function RootLayout({children}: { children: React.ReactNode }) {
       <body className=' bg-light-grey'>
         <nav>
           <Link href="/"></Link>
-          <Link href="/demo"></Link>
         </nav>
         {children}
       </body>

@@ -41,7 +41,7 @@ export default async function Profile({ params }:any) {
 
     // Get user's info
     const user = await getUser(usernameURL);
-    const { avatar } = user || {};
+    const { avatar, base64 } = user || {};
     if(avatar) {
       var profile = `https://api.docuclimb.com/api/files/_pb_users_auth_/${user?.id}/${avatar}`
     }
@@ -57,7 +57,7 @@ export default async function Profile({ params }:any) {
 
   return (
     <div className='bg-light-grey h-full'>
-      <ProfileHeader username={usernameURL} profile={profile} first={user?.first} numClimbs={climbs.length} currentUser={auth?.username} description={user?.description}/>
+      <ProfileHeader username={usernameURL} profile={profile} first={user?.first} numClimbs={climbs.length} currentUser={auth?.username} description={user?.description} base64={base64}/>
       {climbs?.length === 0?
       auth?.username === usernameURL? <AddAClimb currentUser={auth?.id}/> : <NoClimbsYet/>
       :<div className="mx-auto py-4 px-4 sm:px-6 lg:px-8">
