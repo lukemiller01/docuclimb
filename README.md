@@ -4,7 +4,7 @@ Docuclimb is Instagram for Bouldering.
 
 ## Demo
 
-[Docuclimb Demo](demo/dc_demo.gif)
+![Docuclimb Demo](demo/dc_demo.gif)
 
 ## Features
 
