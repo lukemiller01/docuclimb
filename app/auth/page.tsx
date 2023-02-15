@@ -5,6 +5,8 @@ import { redirect } from 'next/navigation';
 
 // Import pocketbase
 import { pb } from '../functions/pocketbase';
+
+// Modals
 import VerifyEmail from '../Components/Authentication/VerifyEmail';
 import UpdateEmail from '../Components/Authentication/UpdateEmail';
 import ResetPassword from '../Components/Authentication/ResetPassword';
@@ -17,11 +19,14 @@ async function getVerified(token:string) {
     return true;
   }
   catch (error) {
+    console.log(error);
     return false;
   }
 }
 
 export default async function Auth({searchParams,}: {searchParams?: { [key: string]: string | string[] | undefined };}) {
+
+  console.log(searchParams);
 
   // If there's no search params / redirect to home
   if(searchParams === undefined || !searchParams.mode || !searchParams.token) {
