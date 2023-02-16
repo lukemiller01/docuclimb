@@ -40,7 +40,8 @@ function getProfile() {
 }
 
 export default async function Profile({ params }:any) {
-    const usernameURL = params.username
+    // const usernameURL = params.username
+    const usernameURL = 'lukemiller'
 
     // Get user's info
     const user = await getUser(usernameURL);

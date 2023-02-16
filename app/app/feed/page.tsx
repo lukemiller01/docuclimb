@@ -1,4 +1,5 @@
 export const dynamic = 'force-dynamic';
+// https://beta.nextjs.org/docs/api-reference/segment-config
 
 // React Components
 import Climb from './Climb';
