@@ -1,4 +1,4 @@
-export const fetchCache = 'force-no-store'
+export const dynamic = 'force-dynamic';
 
 // React Components
 import Climb from './Climb';
