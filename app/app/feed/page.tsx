@@ -1,3 +1,5 @@
+export const fetchCache = 'force-no-store'
+
 // React Components
 import Climb from './Climb';
 

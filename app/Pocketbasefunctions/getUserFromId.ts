@@ -18,7 +18,7 @@ interface User {
 async function getUserFromId(id: string) {
     
     try {
-        const user = pb.collection('users').getFirstListItem(`id="${id}"`);
+        const user = await pb.collection('users').getFirstListItem(`id="${id}"`);
         return user as unknown as User;
     } catch (error) {
         console.log(error);
