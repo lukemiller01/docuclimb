@@ -16,7 +16,7 @@ import ErrorMessage from "../ErrorMessage";
 import { pb } from "../../Pocketbasefunctions/pocketbase";
 
 interface Token {
-  token: string;
+  [key: string]: string;
 }
 
 const UpdateEmail = ({ token }: Token) => {

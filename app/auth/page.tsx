@@ -29,7 +29,7 @@ async function getVerified(token:string) {
 }
 
 // Display corrrect UI based on the mode
-export default async function Auth({searchParams,}: {searchParams?: { [key: string]: string | string[] | undefined };}) {
+export default async function Auth({searchParams,}: {searchParams?: { [key: string]: string };}) {
 
   // If there's no search params / redirect to home
   if(searchParams === undefined || !searchParams['token'] || !searchParams['mode']) {
@@ -40,6 +40,7 @@ export default async function Auth({searchParams,}: {searchParams?: { [key: stri
   var result;
   if(searchParams.mode === 'verifyEmail') {
     result = await getVerified(searchParams['token'] as string);
+    
   }
 
   return (
@@ -70,7 +71,7 @@ export default async function Auth({searchParams,}: {searchParams?: { [key: stri
             </defs>
           </svg>
       </div>
-      { searchParams['mode'] === 'verifyEmail' ? <VerifyEmail result={result}/> : null}
+      { searchParams['mode'] === 'verifyEmail' ? <VerifyEmail result={result? result : false}/> : null}
       { searchParams['mode'] === 'updateEmail' ? <UpdateEmail token={searchParams.token}/> : null}
       { searchParams['mode'] === 'resetPassword' ? <ResetPassword token={searchParams.token}/> : null}
       <div className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]">
