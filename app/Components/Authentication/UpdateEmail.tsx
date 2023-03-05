@@ -1,50 +1,55 @@
-'use client'
+"use client";
 
 // Functional
-import React from 'react'
-import { Dialog, Transition } from '@headlessui/react';
-import { Fragment, useState } from 'react';
+import React from "react";
+import { Fragment, useState } from "react";
+import { useRouter } from "next/navigation";
 
 // Icons
-import { ArrowPathIcon } from '@heroicons/react/24/outline';
+import { ArrowPathIcon } from "@heroicons/react/24/outline";
 
-import { useRouter } from 'next/navigation';
+// Components
+import { Dialog, Transition } from "@headlessui/react";
+import ErrorMessage from "../ErrorMessage";
 
 // Pocketbase
-import { pb } from '../../Pocketbasefunctions/pocketbase';
-import ErrorMessage from '../ErrorMessage';
+import { pb } from "../../Pocketbasefunctions/pocketbase";
 
-const UpdateEmail = ({token}:any) => {
+interface Token {
+  token: string;
+}
 
-    // Error
-    const [error, setError] = useState('');
+const UpdateEmail = ({ token }: Token) => {
+  // Error
+  const [error, setError] = useState("");
 
-    const router = useRouter();
+  const router = useRouter();
 
-    function closeModal() {
-      setIsOpen(false);
-      router.push('/');
+  function closeModal() {
+    setIsOpen(false);
+    router.push("/");
+  }
+
+  const [password, setPassword] = useState(""); // User input
+  const [buttonDisabled, setButtonDisabled] = useState(false); // Is the button disabled?
+  const [isOpen, setIsOpen] = useState(true); // If the modal is open (needs refactor)
+
+  const confirmChange = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setButtonDisabled(true);
+    setError("");
+
+    try {
+      await pb.collection("users").confirmEmailChange(token, password);
+      pb.authStore.clear();
+      router.push("/login");
+    } catch (error: any) {
+      // Becuase "Catch clause variable type annotation must be 'any' or 'unknown' if specified"
+      setError(error.message);
     }
 
-    const [password, setPassword] = useState(''); // User input
-    const [buttonDisabled, setButtonDisabled] = useState(false); // Is the button disabled?
-    const [isOpen, setIsOpen] = useState(true); // If the modal is open (needs refactor)
-  
-    const confirmChange = async(e:any) => {
-        e.preventDefault();
-        setButtonDisabled(true);
-        setError('');
-
-        try {
-          await pb.collection('users').confirmEmailChange(token, password);
-          pb.authStore.clear();
-          router.push('/login');
-        } catch (error:any) {
-          setError(error.message);
-        }
-
-        setButtonDisabled(false);
-    }
+    setButtonDisabled(false);
+  };
 
   return (
     <>
@@ -74,60 +79,65 @@ const UpdateEmail = ({token}:any) => {
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                    <Dialog.Title
+                  <Dialog.Title
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900"
-                    >
+                  >
                     Update Your Email
-                    </Dialog.Title>
-                    <div className="mt-2">
-                        <p className="text-sm text-gray-500">
-                            Please confirm your email change
-                        </p>
+                  </Dialog.Title>
+                  <div className="mt-2">
+                    <p className="text-sm text-gray-500">
+                      Please confirm your email change
+                    </p>
+                  </div>
+
+                  <form
+                    className="mt-8 space-y-6"
+                    onSubmit={(e) => confirmChange(e)}
+                  >
+                    <div className="hidden">
+                      <label htmlFor="username" className="sr-only">
+                        username
+                      </label>
+                      <input
+                        id="username"
+                        type="text"
+                        autoComplete="username"
+                      />
                     </div>
 
-                    <form className="mt-8 space-y-6" onSubmit={(e) => confirmChange(e)}>
-                        <div className='hidden'>
-                            <label htmlFor="username" className="sr-only">
-                            username
-                            </label>
-                            <input
-                            id="username"
-                            type="text"
-                            autoComplete="username"
-                            />
-                        </div>
+                    <div>
+                      <label htmlFor="password" className="sr-only">
+                        Password
+                      </label>
+                      <input
+                        id="password"
+                        name="password"
+                        type="password"
+                        autoComplete="current-password"
+                        required
+                        className="relative block w-full appearance-none rounded-none border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                        placeholder="Password"
+                        onChange={(e) => setPassword(e.target.value)}
+                      />
+                    </div>
 
-                        <div>
-                            <label htmlFor="password" className="sr-only">
-                            Password
-                            </label>
-                            <input
-                            id="password"
-                            name="password"
-                            type="password"
-                            autoComplete="current-password"
-                            required
-                            className="relative block w-full appearance-none rounded-none border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                            placeholder="Password"
-                            onChange={(e) => setPassword(e.target.value)}
-                            />
-                        </div>
-
-                        <div>
-                            <button
-                                type="submit"
-                                className="group relative flex w-full justify-center rounded-md border border-transparent bg-brand-green py-2 px-4 text-sm font-medium text-white hover:bg-brand-green-tint"
-                                disabled={buttonDisabled}>
-                                <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-                                </span>
-                                {buttonDisabled
-                                            ? <ArrowPathIcon className="animate-spin h-5 w-5"></ArrowPathIcon>
-                                            : 'Confirm' }
-                            </button>
-                        </div>
-                    </form>
-                    {error? <ErrorMessage error={error}/> : null}
+                    <div>
+                      <button
+                        type="submit"
+                        className="group relative flex w-full justify-center rounded-md border border-transparent bg-brand-green py-2 px-4 text-sm font-medium text-white hover:bg-brand-green-tint"
+                        disabled={buttonDisabled}
+                      >
+                        <span className="absolute inset-y-0 left-0 flex items-center pl-3"></span>
+                        {buttonDisabled ? (
+                          <ArrowPathIcon className="animate-spin h-5 w-5"></ArrowPathIcon>
+                        ) : (
+                          "Confirm"
+                        )}
+                      </button>
+                    </div>
+                  </form>
+                  {error ? <ErrorMessage error={error} /> : null}
                 </Dialog.Panel>
               </Transition.Child>
             </div>
@@ -135,7 +145,7 @@ const UpdateEmail = ({token}:any) => {
         </Dialog>
       </Transition>
     </>
-  )
-}
+  );
+};
 
-export default UpdateEmail
+export default UpdateEmail;

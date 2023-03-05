@@ -1,31 +1,43 @@
 'use client'
-import { Fragment, useState } from 'react'
+
+// Functional
+import { Fragment } from 'react'
+
+// Components
 import { Listbox, Transition } from '@headlessui/react'
+
+// Icons
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 
 const grade = [
-  { grade: 'V0' },
-  { grade: 'V1' },
-  { grade: 'V2' },
-  { grade: 'V3' },
-  { grade: 'V4' },
-  { grade: 'V5' },
-  { grade: 'V6' },
-  { grade: 'V7' },
-  { grade: 'V8' },
-  { grade: 'V9' },
-  { grade: 'V10' },
-  { grade: 'V11' },
-  { grade: 'V12' },
-  { grade: 'V13' },
-  { grade: 'V14' },
-  { grade: 'V15' },
-  { grade: 'V16' },
-  { grade: 'V17' },
-]
+  { grade: "V0" },
+  { grade: "V1" },
+  { grade: "V2" },
+  { grade: "V3" },
+  { grade: "V4" },
+  { grade: "V5" },
+  { grade: "V6" },
+  { grade: "V7" },
+  { grade: "V8" },
+  { grade: "V9" },
+  { grade: "V10" },
+  { grade: "V11" },
+  { grade: "V12" },
+  { grade: "V13" },
+  { grade: "V14" },
+  { grade: "V15" },
+  { grade: "V16" },
+  { grade: "V17" },
+];
 
-export default function GradeListBox({selected, setSelected}: any) {
+interface GradeState {
+  selected: {
+    grade: string;
+  };
+  setSelected: React.Dispatch<React.SetStateAction<{ grade: string }>>;
+}
 
+export default function GradeListBox({ selected, setSelected }: GradeState) {
   return (
     <div className="top-16 w-72 mx-auto">
       <Listbox value={selected} onChange={setSelected}>
@@ -51,7 +63,7 @@ export default function GradeListBox({selected, setSelected}: any) {
                   key={gradeIdx}
                   className={({ active }) =>
                     `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                      active ? 'bg-amber-100 text-amber-900' : 'text-gray-900'
+                      active ? "bg-amber-100 text-amber-900" : "text-gray-900"
                     }`
                   }
                   value={grade}
@@ -60,7 +72,7 @@ export default function GradeListBox({selected, setSelected}: any) {
                     <>
                       <span
                         className={`block truncate ${
-                          selected ? 'font-medium' : 'font-normal'
+                          selected ? "font-medium" : "font-normal"
                         }`}
                       >
                         {grade.grade}
@@ -79,5 +91,5 @@ export default function GradeListBox({selected, setSelected}: any) {
         </div>
       </Listbox>
     </div>
-  )
+  );
 }

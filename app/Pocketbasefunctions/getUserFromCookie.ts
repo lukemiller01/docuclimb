@@ -1,3 +1,4 @@
+import { ReadonlyRequestCookies } from 'next/dist/server/app-render'
 import { pb } from './pocketbase'
 
 interface User {
@@ -15,7 +16,8 @@ interface User {
   base64: string
 }
 
-function getUserFromCookie(cookies: any): User | null {
+function getUserFromCookie(cookies: ReadonlyRequestCookies): User | null {
+
   const authCookie = cookies.get("pb_auth");
 
   if (!authCookie) return null;

@@ -1,54 +1,59 @@
-'use client'
+"use client";
 
 // Functional
-import React from 'react'
-import { useState } from 'react'
-import Image from 'next/image'
-import { useRouter } from 'next/navigation';
-import { pb } from '../Pocketbasefunctions/pocketbase'
+import React from "react";
+import { useState } from "react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { pb } from "../Pocketbasefunctions/pocketbase";
 
 // Images/icons
-import logo from '../../public/docuclimb.svg'
-import { LockClosedIcon } from '@heroicons/react/20/solid'
-import { ArrowPathIcon } from '@heroicons/react/24/outline'
-import Link from 'next/link';
-import ErrorMessage from '../Components/ErrorMessage';
+import logo from "../../public/docuclimb.svg";
+import { LockClosedIcon } from "@heroicons/react/20/solid";
+import { ArrowPathIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
+import ErrorMessage from "../Components/ErrorMessage";
 
 export default function Login() {
-
-  const [userData, setUserData] = useState({username: '', password: ''});
+  const [userData, setUserData] = useState({ username: "", password: "" });
   const [buttonDisabled, setButtonDisabled] = useState(false);
 
   // Error
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const router = useRouter();
 
-  const login = async(e:any) => {
+  const login = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setButtonDisabled(true);
-    setError('');
+    setError("");
 
     try {
-      await pb.collection('users').authWithPassword(
-        userData.username,
-        userData.password,
-      );
+      await pb
+        .collection("users")
+        .authWithPassword(userData.username, userData.password);
 
-      router.push('/app/feed');
-    } catch (error:any) {
+      router.push("/app/feed");
+    } catch (error: any) {
+      // Becuase "Catch clause variable type annotation must be 'any' or 'unknown' if specified"
       setError(error.message);
     }
 
     setButtonDisabled(false);
-  }
+  };
 
   return (
     <>
       <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-md space-y-8">
           <div>
-            <Image className='mx-auto h-12 w-auto' src={logo} alt='docuclimb logo' width={50} height={50}/>
+            <Image
+              className="mx-auto h-12 w-auto"
+              src={logo}
+              alt="docuclimb logo"
+              width={50}
+              height={50}
+            />
             <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
               Sign In
             </h2>
@@ -67,7 +72,9 @@ export default function Login() {
                   required
                   className="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   placeholder="Username"
-                  onChange={(e) => setUserData({...userData, username: e.target.value})}
+                  onChange={(e) =>
+                    setUserData({ ...userData, username: e.target.value })
+                  }
                 />
               </div>
               <div>
@@ -82,14 +89,19 @@ export default function Login() {
                   required
                   className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   placeholder="Password"
-                  onChange={(e) => setUserData({...userData, password: e.target.value})}
+                  onChange={(e) =>
+                    setUserData({ ...userData, password: e.target.value })
+                  }
                 />
               </div>
             </div>
 
             <div className="flex items-center justify-center">
               <div className="text-sm">
-                <Link href="/recover" className="font-medium text-indigo-600 hover:text-indigo-500">
+                <Link
+                  href="/recover"
+                  className="font-medium text-indigo-600 hover:text-indigo-500"
+                >
                   Forgot your password?
                 </Link>
               </div>
@@ -102,23 +114,31 @@ export default function Login() {
                 disabled={buttonDisabled}
               >
                 <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-                  <LockClosedIcon className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" aria-hidden="true" />
+                  <LockClosedIcon
+                    className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
+                    aria-hidden="true"
+                  />
                 </span>
-                {buttonDisabled
-                              ? <ArrowPathIcon className="animate-spin h-5 w-5"></ArrowPathIcon>
-                              : 'Sign In' }
+                {buttonDisabled ? (
+                  <ArrowPathIcon className="animate-spin h-5 w-5"></ArrowPathIcon>
+                ) : (
+                  "Sign In"
+                )}
               </button>
             </div>
             <p className="mt-2 text-center text-sm text-gray-600">
-              {'Don\'t have an account? '}
-              <a href="/register" className="font-medium text-indigo-600 hover:text-indigo-500">
+              {"Don't have an account? "}
+              <a
+                href="/register"
+                className="font-medium text-indigo-600 hover:text-indigo-500"
+              >
                 Sign Up
               </a>
             </p>
           </form>
-          {error? <ErrorMessage error={error}/> : null}
+          {error ? <ErrorMessage error={error} /> : null}
         </div>
       </div>
     </>
-  )
+  );
 }

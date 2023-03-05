@@ -1,11 +1,24 @@
-import { useState } from 'react'
-import { Switch } from '@headlessui/react'
+// Components
+import { Switch } from "@headlessui/react";
 
-export default function SettingSwitch({enabled, setEnabled}:any) {
+interface EnvironmentState {
+  enabled: boolean;
+  setEnabled: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
+export default function SettingSwitch({
+  enabled,
+  setEnabled,
+}: EnvironmentState) {
   return (
-    <div className='flex justify-center items-center gap-4 py-2'>
-        <p className={`${enabled ? '' : 'font-bold'} text-base text-gray-400 sm:text-sm w-16 text-right`}>Indoor</p>
+    <div className="flex justify-center items-center gap-4 py-2">
+      <p
+        className={`${
+          enabled ? "" : "font-bold"
+        } text-base text-gray-400 sm:text-sm w-16 text-right`}
+      >
+        Indoor
+      </p>
       <Switch
         checked={enabled}
         onChange={setEnabled}
@@ -14,11 +27,17 @@ export default function SettingSwitch({enabled, setEnabled}:any) {
         <span className="sr-only">Indoor/Outdoor</span>
         <span
           aria-hidden="true"
-          className={`${enabled ? 'translate-x-9' : 'translate-x-0'}
+          className={`${enabled ? "translate-x-9" : "translate-x-0"}
             pointer-events-none inline-block h-[34px] w-[34px] transform rounded-full bg-brand-green shadow-lg ring-0 transition duration-200 ease-in-out`}
         />
       </Switch>
-      <p className={`${enabled ? 'font-bold' : ''} text-base text-gray-400 sm:text-sm w-16`}>Outdoor</p>
+      <p
+        className={`${
+          enabled ? "font-bold" : ""
+        } text-base text-gray-400 sm:text-sm w-16`}
+      >
+        Outdoor
+      </p>
     </div>
-  )
+  );
 }

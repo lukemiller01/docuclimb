@@ -1,7 +1,12 @@
 'use client'
-import { useEffect } from 'react'
-import { Fragment, useState } from 'react'
+
+// Functional
+import { Fragment } from 'react'
+
+// Components
 import { Listbox, Transition } from '@headlessui/react'
+
+// Icons
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 
 const color = [
@@ -17,9 +22,15 @@ const color = [
   { color: 'Other' },
 ]
 
-export default function ColorListBox({selected, setSelected}: any) {
-  
-  // const [selected, setSelected] = useState(color[0])
+interface ColorState {
+  selected: {
+    color: string,
+  }
+  setSelected: React.Dispatch<React.SetStateAction<{color: string}>>,
+}
+
+// TODO: remove text-amber-600 && text-gray-900
+export default function ColorListBox({selected, setSelected}: ColorState) {
 
   return (
     <div className="top-16 w-72 mx-auto">
@@ -76,6 +87,3 @@ export default function ColorListBox({selected, setSelected}: any) {
     </div>
   )
 }
-
-// TODO: remove text-amber-600 &&
-// text-gray-900

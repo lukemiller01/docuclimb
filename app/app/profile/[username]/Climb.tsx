@@ -27,10 +27,26 @@ const colorVariants: ColorArray = {
     black: 'text-black',
 }
 
+// Props coming from Server component
+interface Climb {
+    climb: {
+        id: string,
+        grade: string,
+        color: string,
+        image: string,
+        base64: string,
+        date: string,
+        username: string,
+        imageUrl: string,
+        uid: string,
+    }
+    index: number,
+}
+
 // Indidivual climb on the profile page.
 // This is very close to the individual climb on the feed page.
 // See feed/Climb.tsx for details.
-export default function Climb({climb, index}: any) {
+export default function Climb({climb, index}: Climb) {
     const { id, grade, color, image, date, base64 } = climb || {};
     const url = `https://api.docuclimb.com/api/files/boulders/${id}/${image}`
 

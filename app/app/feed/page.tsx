@@ -8,9 +8,25 @@ import Climb from './Climb';
 import { cookies } from 'next/headers';
 import { getUserFromCookie } from '../../Pocketbasefunctions/getUserFromCookie';
 import { getUserFromId } from '../../Pocketbasefunctions/getUserFromId';
+import { ReadonlyRequestCookies } from 'next/dist/server/app-render';
 
+// Definition for feed data (Array of Climbs)
+interface Climb {
+    id: string,
+    grade: string,
+    color: string,
+    image: string,
+    base64: string,
+    date: string,
+    username: string,
+    imageUrl: string,
+    uid: string,
+    environment: boolean,
+}
+
+// Gets currently signed-in users by cookie
 function getProfile() {
-    const auth = getUserFromCookie(cookies());
+    const auth = getUserFromCookie(cookies() as ReadonlyRequestCookies);
     return auth;
 }
 
@@ -19,11 +35,10 @@ async function getClimbs() {
     try {
         const res = await fetch('https://api.docuclimb.com/api/collections/boulders/records?page=1&perPage=30',
             {cache: 'no-store'}
-        );
-        const data = await res.json();
+        ); // Get data from Pocketbase
+        const data = await res.json(); // Convert response to JSON
         for (let i = 0; i < data.items.length; i++) {
-            // For every climb, add an avatar & username to include in post
-            // This data is not stored in the boulder model
+            // For every climb, add an avatar & username to include in post because this data is not stored in the boulder model
             let user = await getUserFromId(data.items[i].uid);
             if(user) { // Assert user is not empty
                 let username = user.username;
@@ -40,7 +55,7 @@ async function getClimbs() {
             }
         }
 
-        return data?.items as any[];
+        return data?.items as Array<Climb>; // Return as an array of Climbs
       } catch (error) {
         console.log('Error:', error);
       }
@@ -60,7 +75,7 @@ export default async function Boulders() {
         <div className="mx-auto justify-center grid gap-12 py-12 px-4 bg-light-grey">
             {climbs?.reverse().map((climb, index) => {
                 return (
-                    <Climb key={climb.id} climb={climb} index={index} currentUser={id}/>
+                    <Climb key={climb.id} climb={climb} index={index} currentUser={id? id : '0'}/>
                 );
             })}
         </div>

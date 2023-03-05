@@ -1,24 +1,30 @@
-'use client'
+"use client";
 
 // Functional:
-import React from 'react'
-import { useState } from 'react'
-import Image from 'next/image'
-import { useRouter } from 'next/navigation';
-import { pb } from '../Pocketbasefunctions/pocketbase';
+import React from "react";
+import { useState } from "react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { pb } from "../Pocketbasefunctions/pocketbase";
 
 // Images/icons:
-import logo from '../../public/docuclimb.svg'
-import { LockClosedIcon } from '@heroicons/react/20/solid'
-import { ArrowPathIcon, UserCircleIcon  } from '@heroicons/react/24/outline'
+import logo from "../../public/docuclimb.svg";
+import { LockClosedIcon } from "@heroicons/react/20/solid";
+import { ArrowPathIcon, UserCircleIcon } from "@heroicons/react/24/outline";
 
 // Components:
-import ErrorMessage from '../Components/ErrorMessage';
+import ErrorMessage from "../Components/ErrorMessage";
 
 export default function Register() {
-
   // User data
-  const [userData, setUserData] = useState({first: '', username: '', email: '', password: '', passwordConfirm: '', featureUpdates: false});
+  const [userData, setUserData] = useState({
+    first: "",
+    username: "",
+    email: "",
+    password: "",
+    passwordConfirm: "",
+    featureUpdates: false,
+  });
   const [selectedImage, setSelectedImage] = useState<File>();
   const [previewImage, setPreviewImage] = useState("");
   const [buttonDisabled, setButtonDisabled] = useState(false);
@@ -26,37 +32,37 @@ export default function Register() {
   const [baseImage, setBaseImage] = useState<File>();
 
   // Error
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const router = useRouter();
 
-  function readAsDataURL(file:File) {
+  function readAsDataURL(file: File) {
     return new Promise((resolve, reject) => {
-        const fr = new FileReader();
-        fr.onerror = reject;
-        fr.onload = () => {
-            resolve(fr.result);
-        }
-        fr.readAsDataURL(file);
+      const fr = new FileReader();
+      fr.onerror = reject;
+      fr.onload = () => {
+        resolve(fr.result);
+      };
+      fr.readAsDataURL(file);
     });
   }
 
-  const login = async(e:any) => {
+  const login = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setButtonDisabled(true);
-    setError('');
+    setError("");
 
     // Set formData for internal API
     const formData = new FormData();
-    if(selectedImage) {
+    if (selectedImage) {
       formData.append("avatar", selectedImage);
     }
-    if(baseImage) {
+    if (baseImage) {
       try {
-        const base64 = await readAsDataURL(baseImage) as string;
+        const base64 = (await readAsDataURL(baseImage)) as string;
         formData.append("base64", base64);
       } catch (error) {
-          console.log(error)
+        console.log(error);
       }
     }
     formData.append("first", userData.first);
@@ -68,30 +74,36 @@ export default function Register() {
     formData.append("description", `Hi, my name is ${userData.first} 🧗‍♂️👋`);
 
     try {
-      await pb.collection('users').create(formData)
-      await pb.collection('users').requestVerification(userData.email);
-      await pb.collection('users').authWithPassword(
-        userData.username,
-        userData.password,
-      );
-  
-      router.replace('/app/feed');
-    } catch (error:any) {
+      await pb.collection("users").create(formData);
+      await pb.collection("users").requestVerification(userData.email);
+      await pb
+        .collection("users")
+        .authWithPassword(userData.username, userData.password);
+
+      router.replace("/app/feed");
+    } catch (error: any) {
+      // Becuase "Catch clause variable type annotation must be 'any' or 'unknown' if specified"
       setButtonDisabled(false);
-      var errorMessage = '';
-      Object.keys(error.data["data"]).forEach(function(key) {
-        errorMessage = errorMessage + `${error.data["data"][key].message} \n`
+      var errorMessage = "";
+      Object.keys(error.data["data"]).forEach(function (key) {
+        errorMessage = errorMessage + `${error.data["data"][key].message} \n`;
       });
       setError(errorMessage);
     }
-  }
+  };
 
   return (
     <>
       <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-md space-y-8">
           <div>
-            <Image className='mx-auto h-12 w-auto' src={logo} alt='docuclimb logo' width={50} height={50}/>
+            <Image
+              className="mx-auto h-12 w-auto"
+              src={logo}
+              alt="docuclimb logo"
+              width={50}
+              height={50}
+            />
             <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
               Register
             </h2>
@@ -99,7 +111,7 @@ export default function Register() {
           <form className="mt-8 space-y-6" onSubmit={(e) => login(e)}>
             <input type="hidden" name="remember" defaultValue="true" />
             <div className="-space-y-px rounded-md">
-            <div>
+              <div>
                 <label htmlFor="first-name" className="sr-only">
                   first name
                 </label>
@@ -110,7 +122,9 @@ export default function Register() {
                   required
                   className="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   placeholder="First name"
-                  onChange={(e) => setUserData({...userData, first: e.target.value})}
+                  onChange={(e) =>
+                    setUserData({ ...userData, first: e.target.value })
+                  }
                 />
               </div>
               <div>
@@ -124,7 +138,9 @@ export default function Register() {
                   required
                   className="relative block w-full appearance-none rounded-none border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   placeholder="Email"
-                  onChange={(e) => setUserData({...userData, email: e.target.value})}
+                  onChange={(e) =>
+                    setUserData({ ...userData, email: e.target.value })
+                  }
                 />
               </div>
               <div>
@@ -138,7 +154,9 @@ export default function Register() {
                   required
                   className="relative block w-full appearance-none rounded-none border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   placeholder="Username"
-                  onChange={(e) => setUserData({...userData, username: e.target.value})}
+                  onChange={(e) =>
+                    setUserData({ ...userData, username: e.target.value })
+                  }
                 />
               </div>
               <div>
@@ -153,7 +171,9 @@ export default function Register() {
                   required
                   className="relative block w-full appearance-none rounded-none border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   placeholder="Password"
-                  onChange={(e) => setUserData({...userData, password: e.target.value})}
+                  onChange={(e) =>
+                    setUserData({ ...userData, password: e.target.value })
+                  }
                 />
               </div>
               <div>
@@ -168,24 +188,44 @@ export default function Register() {
                   required
                   className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   placeholder="Confirm Password"
-                  onChange={(e) => setUserData({...userData, passwordConfirm: e.target.value})}
+                  onChange={(e) =>
+                    setUserData({
+                      ...userData,
+                      passwordConfirm: e.target.value,
+                    })
+                  }
                 />
               </div>
 
               <div>
                 <label className="sr-only">Photo</label>
                 <div className="mt-4 flex items-center justify-center">
-                  {loadingImage 
-                    ? <ArrowPathIcon className="animate-spin h-12 w-12"></ArrowPathIcon>
-                    : previewImage? <div className='w-12 h-12 relative'><Image src={previewImage} alt='uploaded image' fill className='object-cover rounded-[50%]'></Image></div>: <UserCircleIcon className=' h-12 w-12'/>
-                  }
-                    <label
-                      htmlFor="file-upload"
-                      className="ml-5 rounded-md border border-gray-300 bg-white py-2 px-3 text-sm font-medium leading-4 text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 cursor-pointer"
-                    >
-                      <span>Change</span>
-                      <input id="file-upload" type="file" className="sr-only" accept=".png, .jpg, .jpeg, .heic, .heif" onChange={ async ({target}) => {
-                        if(target.files) {
+                  {loadingImage ? (
+                    <ArrowPathIcon className="animate-spin h-12 w-12"></ArrowPathIcon>
+                  ) : previewImage ? (
+                    <div className="w-12 h-12 relative">
+                      <Image
+                        src={previewImage}
+                        alt="uploaded image"
+                        fill
+                        className="object-cover rounded-[50%]"
+                      ></Image>
+                    </div>
+                  ) : (
+                    <UserCircleIcon className=" h-12 w-12" />
+                  )}
+                  <label
+                    htmlFor="file-upload"
+                    className="ml-5 rounded-md border border-gray-300 bg-white py-2 px-3 text-sm font-medium leading-4 text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 cursor-pointer"
+                  >
+                    <span>Change</span>
+                    <input
+                      id="file-upload"
+                      type="file"
+                      className="sr-only"
+                      accept=".png, .jpg, .jpeg, .heic, .heif"
+                      onChange={async ({ target }) => {
+                        if (target.files) {
                           setLoadingImage(true);
                           var imageFile = target.files[0];
 
@@ -196,32 +236,46 @@ export default function Register() {
                             const name = imageFile.name;
                             // Convert to JPEG
                             const heic2any = (await import("heic2any")).default;
-                            const newBlob: any = await heic2any({ blob: imageFile});
+                            // Adding lastModified and name to the blob object, and the blob object does not have those properties. Keeping type as "any"
+                            const newBlob: any = await heic2any({
+                              blob: imageFile,
+                            });
                             newBlob.lastModified = lastModified;
                             newBlob.name = name;
                             // Set the file again
                             imageFile = newBlob;
                           }
 
-                          const imageCompression = (await import("browser-image-compression")).default;
+                          const imageCompression = (
+                            await import("browser-image-compression")
+                          ).default;
 
                           // Compress image into base64 for blur preview
-                          const options2 = { // Set the maximum file size
+                          const options2 = {
+                            // Set the maximum file size
                             maxWidthOrHeight: 50,
-                            useWebWorker: true
-                          }
-                          const compressedFile2 = await imageCompression(imageFile, options2);
+                            useWebWorker: true,
+                          };
+                          const compressedFile2 = await imageCompression(
+                            imageFile,
+                            options2
+                          );
                           setBaseImage(compressedFile2);
 
                           // If the file size is larger than 1MB, compress to ~1MB
-                          if(imageFile.size > 1000000) {
+                          if (imageFile.size > 1000000) {
                             // Clip the size of the image
-                            const options = { // Set the maximum file size
+                            const options = {
+                              // Set the maximum file size
                               maxSizeMB: 1,
-                              useWebWorker: true
-                            }
-                            try { // Compress the image.
-                              const compressedFile = await imageCompression(imageFile, options);
+                              useWebWorker: true,
+                            };
+                            try {
+                              // Compress the image.
+                              const compressedFile = await imageCompression(
+                                imageFile,
+                                options
+                              );
                               imageFile = compressedFile;
                             } catch (error) {
                               console.log(error);
@@ -235,7 +289,8 @@ export default function Register() {
                           // Set URL for preview
                           setPreviewImage(URL.createObjectURL(imageFile));
                         }
-                      }}/>
+                      }}
+                    />
                   </label>
                 </div>
               </div>
@@ -248,9 +303,17 @@ export default function Register() {
                   name="remember-me"
                   type="checkbox"
                   className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                  onChange={(e) => setUserData({...userData, featureUpdates: e.target.checked})}
+                  onChange={(e) =>
+                    setUserData({
+                      ...userData,
+                      featureUpdates: e.target.checked,
+                    })
+                  }
                 />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
+                <label
+                  htmlFor="remember-me"
+                  className="ml-2 block text-sm text-gray-900"
+                >
                   Notify me about new features
                 </label>
               </div>
@@ -263,23 +326,31 @@ export default function Register() {
                 disabled={buttonDisabled}
               >
                 <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-                  <LockClosedIcon className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" aria-hidden="true" />
+                  <LockClosedIcon
+                    className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
+                    aria-hidden="true"
+                  />
                 </span>
-                {buttonDisabled
-                              ? <ArrowPathIcon className="animate-spin h-5 w-5"></ArrowPathIcon>
-                              : 'Sign Up' }
+                {buttonDisabled ? (
+                  <ArrowPathIcon className="animate-spin h-5 w-5"></ArrowPathIcon>
+                ) : (
+                  "Sign Up"
+                )}
               </button>
             </div>
             <p className="mt-2 text-center text-sm text-gray-600">
-              {'Have an account? '}
-              <a href="/register" className="font-medium text-indigo-600 hover:text-indigo-500">
+              {"Have an account? "}
+              <a
+                href="/register"
+                className="font-medium text-indigo-600 hover:text-indigo-500"
+              >
                 Sign In
               </a>
             </p>
           </form>
-          {error? <ErrorMessage error={error}/> : null}
+          {error ? <ErrorMessage error={error} /> : null}
         </div>
       </div>
     </>
-  )
+  );
 }
