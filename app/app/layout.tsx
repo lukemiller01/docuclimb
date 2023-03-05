@@ -6,6 +6,7 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { getUserFromCookie } from '../Pocketbasefunctions/getUserFromCookie';
 import { getUserFromId } from '../Pocketbasefunctions/getUserFromId';
+import { ReadonlyRequestCookies } from 'next/dist/server/app-render';
 
 // Components:
 import Navbar from '../Components/Navbar'
@@ -13,7 +14,7 @@ import Navbar from '../Components/Navbar'
 // Layout for internal application (auth-protected)
 export default async function DashboardLayout({children} : {children: React.ReactNode}) {
 
-  const user = getUserFromCookie(cookies());
+  const user = getUserFromCookie(cookies() as ReadonlyRequestCookies);
 
   if (!user) {
     redirect("/login");
@@ -32,7 +33,7 @@ export default async function DashboardLayout({children} : {children: React.Reac
 
   return (
     <>
-      <Navbar profile={profile} username={username} currentUser={id} base64={userModel?.base64}/>
+      <Navbar profile={profile} username={username} currentUser={id} base64={userModel?.base64 ? userModel?.base64 : '0'}/>
       <nav>
         <Link href="/app/feed"></Link>
         <Link href={`/app/profile/${username}`}/>
