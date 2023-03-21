@@ -1,5 +1,3 @@
-'use client'
-
 // Functional
 import Image from 'next/image';
 
